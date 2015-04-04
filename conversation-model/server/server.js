@@ -1,15 +1,7 @@
 ConversationsCollection.allow({
-    insert:function () {
+    insert:function (userId) {
         //allow all insertions and let Collection2 and SimpleSchema take care of security
-        return true;
-    },
-    remove: function (userId, conversation) {
-        var user = Meteor.users.find(userId, {fields:{securityLevel:true}});
-
-        //if the user is an admin or the user is the only participant left in the conversation
-        if(user.isAdmin() || conversation.isReadOnly()){
-            return true;
-        }
+        return userId && true;
     }
 });
 

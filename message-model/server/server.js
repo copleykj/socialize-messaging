@@ -1,13 +1,13 @@
 MessagesCollection.allow({
     //If the user is a participant, allow them to insert (send) a message
     insert:function (userId, message) {
-        if(ParticipantsCollection.findOne({userId:userId, conversationId:message.conversationId})){
+        if(userId &&ParticipantsCollection.findOne({userId:userId, conversationId:message.conversationId})){
             return true;
         }
     },
     //If the user sent the message, let them modify it.
     update: function (userId, message) {
-        return message.checkOwnership();
+        return userId && message.checkOwnership();
     }
 });
 
