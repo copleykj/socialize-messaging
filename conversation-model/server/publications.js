@@ -51,6 +51,58 @@ Meteor.publish("conversations", function (options) {
     }).start();
 });
 
+/**
+ * Publish conversations that have not been read yet by the user
+ */
+Meteor.publish("unreadConversations", function(){
+    var currentUser;
+
+    if(!this.userId){
+        return this.ready();
+    }
+
+    currentUser = Meteor.users.findOne(this.userId);
+
+    var participantsPublication = new SimplePublication({
+        subHandle:this,
+        collection:ParticipantsCollection,
+        selector:{userId:{$ne:this.userId}},
+        foreignKey:"conversationId",
+        dependant: new SimplePublication({
+            subHandle:this,
+            collection:Meteor.users,
+            selector:{
+                "profile.blockedGenders":{$ne:currentUser.accountGender()},
+                "profile.blockedUsers":{$ne:currentUser._id}
+            },
+            foreignKey:"userId",
+            inverted:true
+        })
+    });
+
+    var messagesPublication = new SimplePublication({
+        subHandle:this,
+        collection:MessagesCollection,
+        selector:{deleted:{$ne:this.userId}},
+        options:{sort:{date:-1}, limit:1},
+        foreignKey:"conversationId",
+        straightPublish:true
+    });
+
+    new SimplePublication({
+        subHandle:this,
+        collection:ParticipantsCollection,
+        selector:{userId:this.userId, deleted:{$exists:false}, read:false},
+        dependant:new SimplePublication({
+            subHandle:this,
+            collection:ConversationsCollection,
+            foreignKey:"conversationId",
+            inverted:true,
+            dependant:[participantsPublication, messagesPublication]
+        })
+    }).start();
+});
+
 
 /**
  * Publish messages for a particular conversation
