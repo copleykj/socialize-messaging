@@ -28,5 +28,5 @@ User.prototype.conversations = function (limit, skip, sortBy, sortOrder) {
 };
 
 User.prototype.isParticipatingIn = function (conversation) {
-    return !!ParticipantsCollection.findOne({userId:this._id, conversationId:conversation._id, deleted:false});
+    return !!ParticipantsCollection.findOne({userId:this._id, conversationId:conversation._id, deleted:{$exists:false}});
 };
