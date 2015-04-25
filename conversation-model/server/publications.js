@@ -12,43 +12,30 @@ Meteor.publish("conversations", function (options) {
 
     options.sort = {date:-1};
 
-    currentUser = Meteor.users.findOne(this.userId);
-
-    var participantsPublication = new SimplePublication({
-        subHandle:this,
-        collection:ParticipantsCollection,
-        selector:{userId:{$ne:this.userId}},
-        foreignKey:"conversationId",
-        dependant: new SimplePublication({
-            subHandle:this,
-            collection:Meteor.users,
-            foreignKey:"userId",
-            inverted:true
-        })
-    });
-
-    var messagesPublication = new SimplePublication({
-        subHandle:this,
-        collection:MessagesCollection,
-        selector:{deleted:{$ne:this.userId}},
-        options:{sort:{date:-1}, limit:1},
-        foreignKey:"conversationId",
-        straightPublish:true
-    });
-
-    new SimplePublication({
-        subHandle:this,
-        collection:ParticipantsCollection,
-        selector:{userId:this.userId, deleted:{$exists:false}},
-        dependant:new SimplePublication({
-            subHandle:this,
-            collection:ConversationsCollection,
+    Meteor.publishWithRelations({
+        handle: this,
+        collection: Meteor.participants,
+        filter: {userId:this.userId, deleted:{$exists:false}},
+        mappings: [{
+            key: 'conversationId',
+            collection: Meteor.conversations,
             options:options,
-            foreignKey:"conversationId",
-            inverted:true,
-            dependant:[participantsPublication, messagesPublication]
-        })
-    }).start();
+            mappings:[{
+                key: "conversationId",
+                collection: Meteor.participants,
+                reverse:true,
+                mappings:[{
+                    key:"userId",
+                    collection:Meteor.users,
+                    options:{fields:{username:true, avatarId:true}}
+                }]
+            },{
+                key: "conversationId",
+                collection: Meteor.messages
+            }]
+        }]
+    });
+
 });
 
 /**
@@ -61,46 +48,30 @@ Meteor.publish("unreadConversations", function(){
         return this.ready();
     }
 
-    currentUser = Meteor.users.findOne(this.userId);
-
-    var participantsPublication = new SimplePublication({
-        subHandle:this,
-        collection:ParticipantsCollection,
-        selector:{userId:{$ne:this.userId}},
-        foreignKey:"conversationId",
-        dependant: new SimplePublication({
-            subHandle:this,
-            collection:Meteor.users,
-            selector:{
-                "profile.blockedGenders":{$ne:currentUser.accountGender()},
-                "profile.blockedUsers":{$ne:currentUser._id}
-            },
-            foreignKey:"userId",
-            inverted:true
-        })
+    Meteor.publishWithRelations({
+        handle: this,
+        collection: Meteor.participants,
+        filter: {userId:this.userId, deleted:{$exists:false}, read:false},
+        mappings: [{
+            key: 'conversationId',
+            collection: Meteor.conversations,
+            mappings:[{
+                key: "conversationId",
+                collection: Meteor.participants,
+                reverse:true,
+                options:{limit:1, sort:{date:-1}},
+                mappings:[{
+                    key:"userId",
+                    collection:Meteor.users,
+                    options:{fields:{username:true, avatarId:true}}
+                }]
+            },{
+                key: "conversationId",
+                collection: Meteor.messages,
+                options:{limit:1, sort:{date:-1}}
+            }]
+        }]
     });
-
-    var messagesPublication = new SimplePublication({
-        subHandle:this,
-        collection:MessagesCollection,
-        selector:{deleted:{$ne:this.userId}},
-        options:{sort:{date:-1}, limit:1},
-        foreignKey:"conversationId",
-        straightPublish:true
-    });
-
-    new SimplePublication({
-        subHandle:this,
-        collection:ParticipantsCollection,
-        selector:{userId:this.userId, deleted:{$exists:false}, read:false},
-        dependant:new SimplePublication({
-            subHandle:this,
-            collection:ConversationsCollection,
-            foreignKey:"conversationId",
-            inverted:true,
-            dependant:[participantsPublication, messagesPublication]
-        })
-    }).start();
 });
 
 
