@@ -30,7 +30,7 @@ Participant.prototype.conversation = function () {
  * @returns {Boolean} Whether the user is observing the conversation
  */
 Participant.prototype.isObserving = function () {
-    return this.observing.length > 0;
+    return this.observing && this.observing.length > 0;
 };
 
 /**
