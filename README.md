@@ -66,13 +66,13 @@ This package provides some publictions for convienience.
 **conversations  {limit:Number, skip:Number}** - Publishes conversations the user is involved in with the participants for each conversation and the last message that was sent to the conversation. (To get all message for a conversation subscribe to the "messagesFor" publication)
 
 ```javascript
-Meteor.subscribe('friends', {limit:10, skip:10});
+Meteor.subscribe('conversations', {limit:10, skip:10});
 ```
 
-**messagesFor "conversationId"** - Publishes the messages for a particular conversation.
+**messagesFor "conversationId" {limit:Number, skip:Number}** - Publishes the messages for a particular conversation.
 
 ```javascript
-Meteor.subscribe('messagesFor', "fMXAoZPxNQGCGCPZQ");
+Meteor.subscribe('messagesFor', "fMXAoZPxNQGCGCPZQ", {limit:10, skip:10});
 ```
 
 ### Stateful Publications ###
