@@ -30,8 +30,10 @@ Meteor.publish("conversations", function (options) {
                     options:{fields:{username:true, avatarId:true}}
                 }]
             },{
+                reverse:true,
                 key: "conversationId",
-                collection: Meteor.messages
+                collection: Meteor.messages,
+                options:{limit:1, sort:{date:-1}}
             }]
         }]
     });
@@ -42,7 +44,6 @@ Meteor.publish("conversations", function (options) {
  * Publish conversations that have not been read yet by the user
  */
 Meteor.publish("unreadConversations", function(){
-    var currentUser;
 
     if(!this.userId){
         return this.ready();
