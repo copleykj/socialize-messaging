@@ -8,18 +8,18 @@ Meteor.publish("conversations", function (options) {
 
     options = options || {};
 
-    options = _.pick(options, ["limit, skip"]);
+    options = _.pick(options, ["limit", "skip"]);
 
     options.sort = {date:-1};
 
     Meteor.publishWithRelations({
         handle: this,
         collection: Meteor.participants,
+        options:options,
         filter: {userId:this.userId, deleted:{$exists:false}},
         mappings: [{
             key: 'conversationId',
             collection: Meteor.conversations,
-            options:options,
             mappings:[{
                 key: "conversationId",
                 collection: Meteor.participants,

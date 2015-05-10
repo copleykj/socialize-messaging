@@ -26,7 +26,7 @@ random@1.0.3
 retry@1.0.3
 service-configuration@1.0.4
 socialize:base-model@0.1.3
-socialize:messaging@0.2.0
+socialize:messaging@0.2.1
 socialize:user-model@0.1.2
 tmeasday:publish-with-relations@0.2.0
 tracker@1.0.7
