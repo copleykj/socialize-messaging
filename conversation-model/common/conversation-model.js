@@ -90,7 +90,7 @@ Conversation.prototype.lastMessage = function () {
  */
 Conversation.prototype.sendMessage = function (body, callback) {
     //TODO: Should we use new Message({body:body, conversationId:this._id}).save() ?
-    return MessagesCollection.insert({body:body, conversationId:this._id, date:new Date()}, callback);
+    return MessagesCollection.insert({body:body, conversationId:this._id, date:ServerTime.date()}, callback);
 };
 
 /**
