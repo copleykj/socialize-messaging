@@ -1,7 +1,7 @@
 Package.describe({
     name: "socialize:messaging",
     summary: "A social messaging package",
-    version: "0.2.2",
+    version: "0.2.3",
     git:"https://github.com/copleykj/socialize-messaging.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function(api) {
 
     api.use([
         "meteor", "mongo", "underscore", "socialize:base-model@0.1.3", "socialize:user-model@0.1.2",
-        "socialize:server-time@0.1.0", "tmeasday:publish-with-relations@0.2.0", "aldeed:simple-schema@1.3.2",
+        "socialize:server-time@0.1.1", "tmeasday:publish-with-relations@0.2.0", "aldeed:simple-schema@1.3.2",
         "aldeed:collection2@2.3.3", "matb33:collection-hooks@0.7.13", "meteorhacks:unblock@1.1.0"
     ]);
 
