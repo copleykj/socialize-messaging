@@ -15,3 +15,14 @@ ConversationsCollection.after.remove(function(userId, document){
     ParticipantsCollection.remove({conversationId:document._id});
     MessagesCollection.remove({conversationId:document._id});
 });
+
+
+Meteor.methods({
+   "findExistingConversationWithUsers": function(users) {
+       users.push(Meteor.userId());
+
+       var conversation = ConversationsCollection.findOne({_participants:{$size:users.length, $all:users}});
+
+       return conversation && conversation._id;
+   }
+});

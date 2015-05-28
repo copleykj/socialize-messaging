@@ -163,8 +163,16 @@ var ConversationSchema = new SimpleSchema({
         type:Date,
         autoValue: function() {
             return new Date();
-        },
-        optional:true
+        }
+    },
+    "_participants":{
+        type:[String],
+        defaultValue:[],
+        index:1
+    },
+    "_participants.$":{
+        type:String,
+        regEx:SimpleSchema.RegEx.Id
     }
 });
 

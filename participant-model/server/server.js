@@ -15,3 +15,13 @@ ParticipantsCollection.allow({
         return userId && participant.checkOwnership();
     }
 });
+
+ParticipantsCollection.after.insert(function(userId, document){
+    ConversationsCollection.update(document.conversationId, {$addToSet:{_participants:document.userId}});
+});
+
+ParticipantsCollection.after.update(function(userId, document){
+    if(document.deleted){
+        ConversationsCollection.update(document.conversationId, {$pull:{_participants:document.userId}});
+    }
+});
