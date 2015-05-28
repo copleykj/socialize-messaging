@@ -60,7 +60,6 @@ var ParticipantSchema = new SimpleSchema({
                 return Meteor.userId();
             }
         },
-        optional:true,
         denyUpdate:true
     },
     "conversationId":{
@@ -84,16 +83,16 @@ var ParticipantSchema = new SimpleSchema({
     },
     "observing":{
         type:[String],
-        defaultValue:[]
-    },
-    "typing":{
-        type:Boolean,
-        defaultValue:false,
-        optional:true
+        defaultValue:[],
+        index:1
     },
     "observing.$":{
         type:String,
         regEx:SimpleSchema.RegEx.Id
+    },
+    "typing":{
+        type:Boolean,
+        defaultValue:false
     }
 
 });
