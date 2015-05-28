@@ -37,5 +37,5 @@ MessagesCollection.after.insert(function (userId, document) {
     });
 
     //update the date on the conversation for sorting the conversation from newest to oldest
-    ConversationsCollection.update({_id:document.conversationId}, {$set:{date:date}});
+    ConversationsCollection.update(document.conversationId, {$set:{date:date}});
 });
