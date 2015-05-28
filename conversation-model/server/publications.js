@@ -23,6 +23,7 @@ Meteor.publish("conversations", function (options) {
             mappings:[{
                 key: "conversationId",
                 collection: Meteor.participants,
+                filter: {userId:{$ne:this.userId}},
                 reverse:true,
                 mappings:[{
                     key:"userId",
