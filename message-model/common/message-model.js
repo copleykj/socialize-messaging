@@ -51,7 +51,6 @@ var MessageSchema = new SimpleSchema({
                 this.unset();
             }
         },
-        optional:true,
         denyUpdate:true
     },
     "conversationId":{
@@ -68,13 +67,11 @@ var MessageSchema = new SimpleSchema({
                 return new Date();
             }
         },
-        optional:true,
         denyUpdate:true
     },
     "deleted":{
         type:[String],
-        defaultValue:[],
-        optional:true
+        defaultValue:[]
     }
 });
 
