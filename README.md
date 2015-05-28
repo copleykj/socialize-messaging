@@ -24,7 +24,7 @@ Provides social network style messaging between users.
 
 **Conversation.prototype.readBy()** - Get a serialized sentence of the users who have read the conversation.
 
-**Conversation.prototype.removeParticipant(user)** - Remove a user from the conversation. *user* param defaults to the currently logged in user. From the client the currently logged in user can only remove themselves. 
+**Conversation.prototype.removeParticipant(user)** - Remove a user from the conversation. *user* param defaults to the currently logged in user. From the client the currently logged in user can only remove themselves.
 
 
 ## Participant Model ##
@@ -56,10 +56,22 @@ This package extends the socialize:user-model package with properties and method
 
 **User.prototype.isParticipatingIn(conversation)** - check if the user is participating in a conversation.
 
+**User.prototype.findExistingConversationWithUsers(users, callback)** - Find and return the _id of an existing conversation between a set of users. This makes a server call so a callback that takes the standard (error, result) parms is required
+
+```javascript
+    var participants = [user1._id, user2._id];
+
+    Meteor.user().findExistingConversationWithUsers(participants, function(error, result){
+        if(result){
+            Router.go("conversation", {_id:result});
+        }
+    })
+```
+
 
 ## Publications ##
 
-### Data Subscriptions ###
+### Data ###
 
 This package provides some publictions for convienience.
 
@@ -75,7 +87,7 @@ Meteor.subscribe('conversations', {limit:10, skip:10});
 Meteor.subscribe('messagesFor', "fMXAoZPxNQGCGCPZQ", {limit:10, skip:10});
 ```
 
-### Stateful Publications ###
+### Stateful ###
 
 These publicatons set certain states for the participant in a conversation. I've chosen to maintain state this way because it maximizes reliability. If the state was set with method calls or collection updates the user could navigate away or the browser could close before the calls execute. With subscriptions they stop when the connection breaks and thus are useful for maintaining state that needs updated when the user leaves the site.
 
