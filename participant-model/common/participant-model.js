@@ -78,8 +78,7 @@ var ParticipantSchema = new SimpleSchema({
                 return;
             }
             return new Date();
-        },
-        optional:true
+        }
     },
     "observing":{
         type:[String],
