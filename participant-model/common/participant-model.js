@@ -65,6 +65,10 @@ Participant.appendSchema({
         type:Boolean,
         defaultValue: false
     },
+    "deleted":{
+        type:Boolean,
+        optional:true
+    },
     "date":{
         type:Date,
         autoValue: function(){
