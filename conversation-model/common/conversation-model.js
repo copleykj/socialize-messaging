@@ -152,7 +152,16 @@ Conversation.prototype.removeParticipant = function(user){
         //which will remove all participant and message records for the conversation as well
         ConversationsCollection.remove(this._id);
     }else{
-        ParticipantsCollection.update({conversationId:this._id, userId:userId}, {$set:{deleted:true, read:true}});
+        var query = {conversationId:this._id, userId:userId};
+        var modifier = {$set:{deleted:true, read:true}};
+
+        if(Meteor.isClient){
+            var participant = ParticipantsCollection.findOne(query);
+            console.log(participant);
+            participant && participant.update(modifier);
+        }else{
+            ParticipantsCollection.update(query, modifier);
+        }
     }
 };
 
