@@ -4,7 +4,7 @@
  * @param {Object} document An object representing a Participant in a conversation
  *                          ususally a Mongo document
  */
-Participant = BaseModel.extend();
+Participant = BaseModel.extendAndSetupCollection("participants");
 
 /**
  * Get the user that is the participant
@@ -42,16 +42,10 @@ Participant.prototype.isTyping = function () {
 };
 
 //Create the participants collection and
-ParticipantsCollection = Participant.prototype._collection = new Mongo.Collection("participants", {
-    transform: function (document) {
-        return new Participant(document);
-    }
-});
-
-Meteor.participants = ParticipantsCollection;
+ParticipantsCollection = Participant.collection;
 
 //Create the participant schema
-var ParticipantSchema = new SimpleSchema({
+Participant.appendSchema({
     "userId":{
         type:String,
         regEx:SimpleSchema.RegEx.Id,
@@ -95,6 +89,3 @@ var ParticipantSchema = new SimpleSchema({
     }
 
 });
-
-//Attach the schema
-ParticipantsCollection.attachSchema(ParticipantSchema);

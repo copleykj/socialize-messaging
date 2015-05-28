@@ -3,7 +3,7 @@
  * @class Conversation
  * @param {Object} document An object representing a conversation ususally a Mongo document
  */
-Conversation = BaseModel.extend();
+Conversation = BaseModel.extendAndSetupCollection("conversations");
 
 /**
  * Fetch list of participants in the conversation
@@ -156,9 +156,10 @@ Conversation.prototype.removeParticipant = function(user){
     }
 };
 
+ConversationsCollection = Conversation.collection;
 
 //The Schema for a Converation
-var ConversationSchema = new SimpleSchema({
+Conversation.appendSchema({
     "date":{
         type:Date,
         autoValue: function() {
@@ -176,15 +177,4 @@ var ConversationSchema = new SimpleSchema({
     }
 });
 
-//Create the Mongo Collection and assign it to the Conversation.prototype._collection so the BaseModel knows how to access it
-ConversationsCollection = Conversation.prototype._collection = new Mongo.Collection("conversations", {
-    transform: function (document) {
-        return new Conversation(document);
-    }
-});
 
-//Add ConversationsCollection to the meteor namespace for convienience
-Meteor.conversations = ConversationsCollection;
-
-//Attach the schema to the collection
-ConversationsCollection.attachSchema(ConversationSchema);

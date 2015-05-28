@@ -3,7 +3,7 @@
  * @class Message
  * @param {Object} document An object representing a Message in a conversation ususally a Mongo document
  */
-Message = BaseModel.extend();
+Message = BaseModel.extendAndSetupCollection("messages");
 
 /**
  * Get the user that wrote the message
@@ -31,16 +31,11 @@ Message.prototype.timestamp = function () {
 };
 
 //Create the messages collection and assign a reference to Message.prototype._collection so BaseModel has access to it
-MessagesCollection = Message.prototype._collection = new Mongo.Collection("messages", {
-    transform: function (document) {
-        return new Message(document);
-    }
-});
+MessagesCollection = Message.collection;
 
-Meteor.messages = MessagesCollection;
 
 //Create our message schema
-var MessageSchema = new SimpleSchema({
+Message.appendSchema({
     "userId":{
         type:String,
         regEx:SimpleSchema.RegEx.Id,
@@ -74,6 +69,3 @@ var MessageSchema = new SimpleSchema({
         defaultValue:[]
     }
 });
-
-//Attach the schema
-MessagesCollection.attachSchema(MessageSchema);
