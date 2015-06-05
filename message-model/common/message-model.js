@@ -30,7 +30,15 @@ Message.prototype.timestamp = function () {
     return stamp += this.date.toLocaleTimeString();
 };
 
-//Create the messages collection and assign a reference to Message.prototype._collection so BaseModel has access to it
+/**
+ * The message timestamp
+ * @method isInFlight
+ * @returns {Boolean} whether the message has been received yet
+ */
+Message.prototype.isInFlight = function() {
+    return this.inFlight;
+};
+
 MessagesCollection = Message.collection;
 
 
@@ -67,5 +75,15 @@ Message.appendSchema({
     "deleted":{
         type:[String],
         defaultValue:[]
+    },
+    "inFlight":{
+        type:Boolean,
+        autoValue:function() {
+            if(this.isInsert){
+                return false;
+            }else{
+                this.unset();
+            }
+        }
     }
 });

@@ -46,7 +46,7 @@ Provides social network style messaging between users.
 
 **Message.prototype.timestamp()** - A string representation of when the message was sent.
 
-
+**Message.prototype.isInFlight()** - Whether or not the message has been rec
 
 ## User Extensions ##
 
