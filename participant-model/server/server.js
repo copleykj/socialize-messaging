@@ -12,7 +12,7 @@ ParticipantsCollection.allow({
     },
     update: function (userId, participant) {
         //can be updated if the record belongs to the currentUser
-        return userId && participant.checkOwnership();
+        participant.checkOwnership();
     }
 });
 
