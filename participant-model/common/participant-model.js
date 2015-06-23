@@ -59,7 +59,8 @@ Participant.appendSchema({
     "conversationId":{
         type:String,
         regEx:SimpleSchema.RegEx.Id,
-        denyUpdate:true
+        denyUpdate:true,
+        index:1
     },
     "read":{
         type:Boolean,
