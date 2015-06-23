@@ -46,9 +46,8 @@ Conversation.prototype.isUnread = function () {
  * @returns {Boolean} Whether the conversation is read only
  */
 Conversation.prototype.isReadOnly = function () {
-    var participants = this.participants().fetch();
     //Conversation is readOnly if there is one participant left and it is the current user
-    return (participants.length === 1 && participants[0]._id === Meteor.userId());
+    return (this._participants.length == 1);
 };
 
 /**
