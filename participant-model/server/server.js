@@ -22,9 +22,15 @@ ParticipantsCollection.after.insert(function(userId, document){
 
 ParticipantsCollection.after.update(function(userId, document){
     if(document.deleted){
-        ConversationsCollection.update(document.conversationId, {$pull:{_participants:document.userId}});
+        if(this.transform().conversation().isReadOnly()){
+            ConversationsCollection.remove(document.conversationId);
+        }else{
+            ConversationsCollection.update(document.conversationId, {$pull:{_participants:document.userId}});
+        }
     }
 });
+
+
 
 UserPresence.onCleanup(function(sessionIds){
     if(sessionIds){

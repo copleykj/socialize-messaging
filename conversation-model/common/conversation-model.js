@@ -142,26 +142,16 @@ Conversation.prototype.readBy = function () {
  * @param {User} user The user to remove, defaults to the currently logged in user
  */
 Conversation.prototype.removeParticipant = function(user){
-    var userId = user._id || Meteor.userId();
-
-    //if there's nobody left in the conversation but the user then
-    //delete the conversation and clean up the participants and messages
-    if(this.isReadOnly()){
-        //Remove the conversation thus causing ConversationsCollection.after.remove() to run
-        //which will remove all participant and message records for the conversation as well
-        ConversationsCollection.remove(this._id);
-    }else{
+        var userId = user._id || Meteor.userId();
         var query = {conversationId:this._id, userId:userId};
         var modifier = {$set:{deleted:true, read:true}};
 
         if(Meteor.isClient){
             var participant = ParticipantsCollection.findOne(query);
-            console.log(participant);
             participant && participant.update(modifier);
         }else{
             ParticipantsCollection.update(query, modifier);
         }
-    }
 };
 
 ConversationsCollection = Conversation.collection;
