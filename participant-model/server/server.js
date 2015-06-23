@@ -25,3 +25,12 @@ ParticipantsCollection.after.update(function(userId, document){
         ConversationsCollection.update(document.conversationId, {$pull:{_participants:document.userId}});
     }
 });
+
+UserPresence.onCleanup(function(sessionIds){
+    if(sessionIds){
+        ParticipantsCollection.update({observing:{$in:sessionIds}}, {$pullAll:{observing:sessionIds}}, {multi:true});
+    }else{
+        ParticipantsCollection.update({}, {$set:{observing:[]}}, {multi:true});
+
+    }
+});
