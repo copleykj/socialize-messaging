@@ -50,7 +50,7 @@ Participant.appendSchema({
         type:String,
         regEx:SimpleSchema.RegEx.Id,
         autoValue:function () {
-            if(this.isInsert && !this.isSet){
+            if(this.isInsert || !this.isFromTrustedCode){
                 return Meteor.userId();
             }
         },
@@ -73,9 +73,6 @@ Participant.appendSchema({
     "date":{
         type:Date,
         autoValue: function(){
-            if(this.isSet){
-                return;
-            }
             return new Date();
         }
     },

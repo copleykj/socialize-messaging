@@ -48,10 +48,8 @@ Message.appendSchema({
         type:String,
         regEx:SimpleSchema.RegEx.Id,
         autoValue:function () {
-            if(this.isInsert){
+            if(this.isInsert || !this.isFromTrustedCode){
                 return Meteor.userId();
-            }else{
-                this.unset();
             }
         },
         denyUpdate:true
@@ -66,8 +64,8 @@ Message.appendSchema({
     "date":{
         type:Date,
         autoValue:function() {
-            if(this.isInsert){
-                return new Date();
+            if(this.isInsert || !this.isFromTrustedCode){
+                return ServerTime.date();
             }
         },
         denyUpdate:true
@@ -79,11 +77,12 @@ Message.appendSchema({
     "inFlight":{
         type:Boolean,
         autoValue:function() {
-            if(this.isInsert){
+            if(!this.isFromTrustedCode){
+                return true;
+            }else if(this.isInsert){
                 return false;
-            }else{
-                this.unset();
             }
-        }
+        },
+        denyUpdate:true
     }
 });

@@ -88,8 +88,7 @@ Conversation.prototype.lastMessage = function () {
  * @param {Function} callback The callback to run upon insertion of the document
  */
 Conversation.prototype.sendMessage = function (body, callback) {
-    //TODO: Should we use new Message({body:body, conversationId:this._id}).save() ?
-    return MessagesCollection.insert({userId:Meteor.userId(), body:body, conversationId:this._id, date:ServerTime.date(), inFlight:true}, callback);
+    new Message({body:body, conversationId:this._id, inFlight:true}).save(callback);
 };
 
 /**
@@ -100,7 +99,7 @@ Conversation.prototype.sendMessage = function (body, callback) {
 Conversation.prototype.addParticipants = function(participants) {
     var self = this;
     _.each(participants, function(participant){
-       ParticipantsCollection.insert({userId:participant._id, conversationId:self._id});
+       new Participant({userId:participant._id, conversationId:self._id}).save();
     });
 };
 
