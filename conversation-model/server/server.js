@@ -19,6 +19,8 @@ ConversationsCollection.after.remove(function(userId, document){
 
 Meteor.methods({
    "findExistingConversationWithUsers": function(users) {
+       check(users, [String]);
+
        users.push(Meteor.userId());
 
        var conversation = ConversationsCollection.findOne({_participants:{$size:users.length, $all:users}});
