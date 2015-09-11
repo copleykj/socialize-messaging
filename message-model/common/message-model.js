@@ -48,15 +48,18 @@ Message.appendSchema({
         type:String,
         regEx:SimpleSchema.RegEx.Id,
         autoValue:function () {
-            if(this.isInsert || !this.isFromTrustedCode){
+            if(this.isInsert){
                 return Meteor.userId();
             }
         },
+        index: 1,
         denyUpdate:true
     },
     "conversationId":{
         type:String,
-        regEx:SimpleSchema.RegEx.Id
+        regEx:SimpleSchema.RegEx.Id,
+        index: 1,
+        denyUpdate: true
     },
     "body":{
         type:String,
@@ -64,15 +67,12 @@ Message.appendSchema({
     "date":{
         type:Date,
         autoValue:function() {
-            if(this.isInsert || !this.isFromTrustedCode){
+            if(this.isInsert){
                 return ServerTime.date();
             }
         },
+        index: -1,
         denyUpdate:true
-    },
-    "deleted":{
-        type:[String],
-        defaultValue:[]
     },
     "inFlight":{
         type:Boolean,

@@ -161,7 +161,8 @@ Conversation.appendSchema({
         type:Date,
         autoValue: function() {
             return new Date();
-        }
+        },
+        index: -1
     },
     "_participants":{
         type:[String],
