@@ -29,7 +29,7 @@ Conversation.prototype.participants = function (limit, skip, sortBy, sortOrder) 
         sort[sortBy] = sortOrder;
         options.sort = sort;
     }
-    return ParticipantsCollection.find({conversationId:this._id, userId:{$ne:Meteor.userId()}}, options);
+    return ParticipantsCollection.find({conversationId:this._id, userId:{$ne:Meteor.userId()}, deleted:{$exists:false}}, options);
 };
 
 /**
