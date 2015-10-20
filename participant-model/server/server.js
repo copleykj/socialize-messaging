@@ -4,10 +4,23 @@ ParticipantsCollection.allow({
         var addedUser = User.createEmpty(participant.userId);
         var conversation = Conversation.createEmpty(participant.conversationId);
 
+        console.log(user._id, addedUser._id);
+
+        if(!userId){
+            throw new Meteor.Error("Must Login", "User must be logged in to perform this action");
+        }
+
         //only allow participant to be added on client if the currentUser is already
         //participating and the added user is not currently participating in the conversation
-        if(userId && user.isParticipatingIn(conversation) && !addedUser.isParticipatingIn(conversation)){
-            return true;
+        if(user.isParticipatingIn(conversation)){
+            if(!addedUser.isParticipatingIn(conversation)){
+                return true;
+            }else{
+                throw new Meteor.Error("Already Participating", addedUser._id + " is already participating in in this conversation");
+            }
+        }else{
+            throw new Meteor.Error("Must Be Participating", user._id + " is not participating in this conversation, so therefore cannot add users to it.");
+
         }
     },
     update: function (userId, participant) {
