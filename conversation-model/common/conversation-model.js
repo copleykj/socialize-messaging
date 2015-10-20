@@ -98,9 +98,27 @@ Conversation.prototype.sendMessage = function (body, callback) {
  */
 Conversation.prototype.addParticipants = function(participants) {
     var self = this;
-    _.each(participants, function(participant){
-       new Participant({userId:participant._id, conversationId:self._id}).save();
-    });
+
+    if(_.isArray(participants)){
+        _.each(participants, function(participant){
+            self.addParticipant(participant);
+        });
+    }else{
+        self.addParticipant(participants);
+    }
+};
+
+/**
+ * Add participant to the conversation
+ * @method addParticipant
+ * @param {User} participant A instance of User to add as a participant in the conversation
+ */
+Conversation.prototype.addParticipant = function(participant) {
+    if(participant instanceof User){
+        new Participant({userId:participant._id, conversationId:this._id}).save();
+    }else{
+        throw new Meteor.Error("User Required", "Each participant must be an instance of User Class");
+    }
 };
 
 /**
