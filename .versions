@@ -48,9 +48,9 @@ retry@1.0.4
 routepolicy@1.0.6
 service-configuration@1.0.5
 socialize:base-model@0.2.3
-socialize:messaging@0.4.2
+socialize:messaging@0.4.3
 socialize:server-presence@0.1.2
-socialize:server-time@0.1.1
+socialize:server-time@0.1.2
 socialize:user-model@0.1.4
 socialize:user-presence@0.2.1
 spacebars@1.0.7
