@@ -14,6 +14,10 @@ Conversation = BaseModel.extendAndSetupCollection("conversations");
  * @returns {Mongo.Cursor} Cursor which upon iteration will return a Participant instance for each record
  */
 Conversation.prototype.participants = function (limit, skip, sortBy, sortOrder) {
+    var uId = this.userId;
+    if(Meteor.isClient){
+        uId = Meteor.userId();
+    }
     var options = {};
     var sort = {};
 
@@ -29,7 +33,7 @@ Conversation.prototype.participants = function (limit, skip, sortBy, sortOrder) 
         sort[sortBy] = sortOrder;
         options.sort = sort;
     }
-    return ParticipantsCollection.find({conversationId:this._id, userId:{$ne:Meteor.userId()}, deleted:{$exists:false}}, options);
+    return ParticipantsCollection.find({conversationId:this._id, userId:{$ne:uId}, deleted:{$exists:false}}, options);
 };
 
 /**
