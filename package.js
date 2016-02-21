@@ -9,7 +9,7 @@ Package.onUse(function(api) {
     api.versionsFrom("1.0.2.1");
 
     api.use([
-        "socialize:user-model@0.1.5", "socialize:user-presence@0.3.2", "socialize:server-time@0.1.2"
+        "socialize:user-model@0.1.6", "socialize:user-presence@0.3.3", "socialize:server-time@0.1.2"
     ]);
 
     //Add the conversation-model files
