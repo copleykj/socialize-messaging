@@ -1,3 +1,18 @@
+var publicationOptionsSchema = new SimpleSchema({
+  limit:{
+    type: Number,
+    optional: true
+  },
+  skip:{
+    type: Number,
+    optional: true
+  },
+  sort:{
+    type: Number,
+    optional: true
+  }
+});
+
 Meteor.publish("conversations", function (options) {
     this.unblock();
     var currentUser;
@@ -7,6 +22,8 @@ Meteor.publish("conversations", function (options) {
     }
 
     options = options || {};
+
+    check(options, publicationOptionsSchema);
 
     options = _.pick(options, ["limit", "skip"]);
 
@@ -84,6 +101,9 @@ Meteor.publish("unreadConversations", function(){
  * @returns {Mongo.Cursor} A cursor of messsages that belong to the current conversation
  */
 Meteor.publish("messagesFor", function(conversationId, options){
+    check(conversationId, String);
+    check(options, publicationOptionsSchema);
+
     var self = this;
     var user = User.createEmpty(self.userId);
 
@@ -110,6 +130,8 @@ Meteor.publish("messagesFor", function(conversationId, options){
  * @param   {String}       conversationId The _id of the conversation the user is viewing
  */
 Meteor.publish("viewingConversation", function(conversationId){
+    check(conversationId, String);
+
     this.unblock();
 
     if(!this.userId){
@@ -140,6 +162,8 @@ Meteor.publish("viewingConversation", function(conversationId){
  * @param   {String}   conversationId The _id of the conversation
  */
 Meteor.publish("typing", function(conversationId){
+    check(conversationId, String);
+
     this.unblock();
 
     if(!this.userId){
