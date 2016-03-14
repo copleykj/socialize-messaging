@@ -65,7 +65,7 @@ if(conversation.isUnread()){
 
 ```html
 <div class="conversation {{#if isUnread}}unread{{/if}}">
-	
+
 </div>
 ```
 
@@ -138,7 +138,7 @@ conversation.addParticipant(user);
 conversation.updateReadState(false); //set the conversation to unread
 ```
 
-**readBy()** - returns the string "read by" followed by a  a serialized sentence of the users who have read the conversation. 
+**readBy()** - returns the string "read by" followed by a  a serialized sentence of the users who have read the conversation.
 
 ```html
 {{readBy}}
@@ -300,29 +300,11 @@ if(!currentUser.isParticipatingIn(conversation)){
 
 ---
 
-## Publications ##
-
-### Data ###
-
-This package provides some publictions for convienience.
-
-**conversations  {limit:Number, skip:Number}** - Publishes conversations the user is involved in with the participants for each conversation and the last message that was sent to the conversation. (To get all message for a conversation subscribe to the "messagesFor" publication)
-
-```javascript
-Meteor.subscribe('conversations', {limit:10, skip:10});
-```
-
-**messagesFor "conversationId" {limit:Number, skip:Number}** - Publishes the messages for a particular conversation.
-
-```javascript
-Meteor.subscribe('messagesFor', "fMXAoZPxNQGCGCPZQ", {limit:10, skip:10});
-```
-
-### Stateful ###
+## Stateful Publications ##
 
 These publicatons set certain states for the participant in a conversation. I've chosen to maintain state this way because it maximizes reliability. If the state was set with method calls or collection updates the user could navigate away or the browser could close before the calls execute. With subscriptions they stop when the connection breaks and thus are useful for maintaining state that needs updated when the user leaves the site.
 
-**viewingConversation "conversationId"** - This publication handles conversation state, setting the observing and read status for the participant. This publication should be subscribed to when the user is viewing the messages for a conversation and should be unsubscribed from when the user is no longer viewing them. Subscribing to this using iron:router's subscriptions option is best as it will handle subcribing when the route is navigated to and unsbscribing when the route is navigated away from.
+**viewingConversation "conversationId"** - This publication handles conversation state, setting the observing and read status for the participant. This publication should be subscribed to when the user is viewing the messages for a conversation and should be unsubscribed from when the user is no longer viewing them.
 
 ```javascript
 Meteor.subscribe('viewingConversation', "fMXAoZPxNQGCGCPZQ");

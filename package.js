@@ -1,7 +1,7 @@
 Package.describe({
     name: "socialize:messaging",
     summary: "A social messaging package",
-    version: "0.4.5",
+    version: "0.5.0",
     git:"https://github.com/copleykj/socialize-messaging.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function(api) {
     api.versionsFrom("1.0.2.1");
 
     api.use([
-        "socialize:user-model@0.1.6", "socialize:user-presence@0.3.3", "socialize:server-time@0.1.2"
+        "socialize:user-model@0.1.7", "socialize:user-presence@0.3.4", "socialize:server-time@0.1.2"
     ]);
 
     //Add the conversation-model files
