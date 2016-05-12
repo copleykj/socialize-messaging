@@ -9,8 +9,6 @@
 Meteor.publish("viewingConversation", function(conversationId){
     check(conversationId, String);
 
-    this.unblock();
-
     if(!this.userId){
         return this.ready();
     }
@@ -40,8 +38,6 @@ Meteor.publish("viewingConversation", function(conversationId){
  */
 Meteor.publish("typing", function(conversationId){
     check(conversationId, String);
-
-    this.unblock();
 
     if(!this.userId){
         return this.ready();

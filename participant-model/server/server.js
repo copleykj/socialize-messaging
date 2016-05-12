@@ -4,8 +4,6 @@ ParticipantsCollection.allow({
         var addedUser = User.createEmpty(participant.userId);
         var conversation = Conversation.createEmpty(participant.conversationId);
 
-        console.log(user._id, addedUser._id);
-
         if(!userId){
             throw new Meteor.Error("Must Login", "User must be logged in to perform this action");
         }
