@@ -43,13 +43,15 @@ ParticipantsCollection.after.update(function(userId, document){
     }
 });
 
+if (Package['socialize:user-presence']) {
 
+  UserPresence.onCleanup(function(sessionIds){
+      if(sessionIds){
+          ParticipantsCollection.update({observing:{$in:sessionIds}}, {$pullAll:{observing:sessionIds}}, {multi:true});
+      }else{
+          ParticipantsCollection.update({}, {$set:{observing:[]}}, {multi:true});
 
-UserPresence.onCleanup(function(sessionIds){
-    if(sessionIds){
-        ParticipantsCollection.update({observing:{$in:sessionIds}}, {$pullAll:{observing:sessionIds}}, {multi:true});
-    }else{
-        ParticipantsCollection.update({}, {$set:{observing:[]}}, {multi:true});
+      }
+  });
 
-    }
-});
+}
