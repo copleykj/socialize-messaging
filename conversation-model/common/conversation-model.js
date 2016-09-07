@@ -169,7 +169,7 @@ Conversation.prototype.readBy = function () {
  * @param {User} user The user to remove, defaults to the currently logged in user
  */
 Conversation.prototype.removeParticipant = function(user){
-        var userId = user._id || Meteor.userId();
+        var userId = user && user._id || Meteor.userId();
         var query = {conversationId:this._id, userId:userId};
         var modifier = {$set:{deleted:true, read:true}};
 
