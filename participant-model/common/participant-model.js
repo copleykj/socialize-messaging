@@ -55,6 +55,7 @@ Participant.appendSchema({
             }
         },
         denyUpdate: true,
+        index: 1,
     },
     conversationId: {
         type: String,
@@ -75,6 +76,7 @@ Participant.appendSchema({
         autoValue() {
             return new Date();
         },
+        index: -1,
     },
     observing: {
         type: [String],
