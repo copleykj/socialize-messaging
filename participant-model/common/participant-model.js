@@ -4,7 +4,7 @@
  * @param {Object} document An object representing a Participant in a conversation
  *                          ususally a Mongo document
  */
-Participant = BaseModel.extendAndSetupCollection('participants');
+Participant = BaseModel.extendAndSetupCollection("participants");
 
 /**
  * Get the user that is the participant
@@ -41,55 +41,55 @@ Participant.prototype.isTyping = function () {
     return this.typing;
 };
 
-// Create the participants collection and
+//Create the participants collection and
 ParticipantsCollection = Participant.collection;
 
-// Create the participant schema
+//Create the participant schema
 Participant.appendSchema({
-    userId: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Id,
-        autoValue() {
-            if (this.isInsert && !this.isSet) {
+    "userId":{
+        type:String,
+        regEx:SimpleSchema.RegEx.Id,
+        autoValue:function () {
+            if(this.isInsert && !this.isSet){
                 return Meteor.userId();
             }
         },
         denyUpdate: true,
         index: 1,
     },
-    conversationId: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Id,
-        denyUpdate: true,
-        index: 1,
+    "conversationId":{
+        type:String,
+        regEx:SimpleSchema.RegEx.Id,
+        denyUpdate:true,
+        index:1
     },
-    read: {
-        type: Boolean,
-        defaultValue: false,
+    "read":{
+        type:Boolean,
+        defaultValue: false
     },
-    deleted: {
-        type: Boolean,
-        optional: true,
+    "deleted":{
+        type:Boolean,
+        optional:true
     },
-    date: {
-        type: Date,
-        autoValue() {
+    "date":{
+        type:Date,
+        autoValue: function(){
             return new Date();
         },
         index: -1,
     },
-    observing: {
-        type: [String],
-        defaultValue: [],
-        index: 1,
+    "observing":{
+        type:[String],
+        defaultValue:[],
+        index:1
     },
-    'observing.$': {
-        type: String,
-        regEx: SimpleSchema.RegEx.Id,
+    "observing.$":{
+        type:String,
+        regEx:SimpleSchema.RegEx.Id
     },
-    typing: {
-        type: Boolean,
-        defaultValue: false,
-    },
+    "typing":{
+        type:Boolean,
+        defaultValue:false
+    }
 
 });
