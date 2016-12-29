@@ -49,7 +49,7 @@ Message.appendSchema({
         regEx:SimpleSchema.RegEx.Id,
         autoValue:function () {
             if(this.isInsert){
-                return Meteor.userId();
+                return this.userId;
             }
         },
         index: 1,
