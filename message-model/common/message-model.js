@@ -1,88 +1,104 @@
+/* eslint-disable import/no-unresolved */
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { BaseModel } from 'meteor/socialize:BaseModel';
+import { ServerTime } from 'meteor/socialize:server-time';
+
+/* eslint-enable import/no-unresolved */
+
+const MessagesCollection = new Mongo.Collection('messages');
+
 /**
  * The Message Class
  * @class Message
- * @param {Object} document An object representing a Message in a conversation ususally a Mongo document
  */
-Message = BaseModel.extendAndSetupCollection("messages");
-
-/**
- * Get the user that wrote the message
- * @method user
- * @returns {User} The user who wrote the message
- */
-Message.prototype.user = function () {
-    return Meteor.users.findOne(this.userId);
-};
-
-/**
- * The message timestamp
- * @method timestamp
- * @returns {String} A string representing the time when the message was sent
- */
-Message.prototype.timestamp = function () {
-    var now = new Date();
-    var stamp = "";
-
-    if(now.toLocaleDateString() != this.date.toLocaleDateString()){
-        stamp += this.date.toLocaleDateString() + " ";
+class Message extends BaseModel {
+    /**
+    * Get the user that wrote the message
+    * @method user
+    * @returns {User} The user who wrote the message
+    */
+    user() {
+        return Meteor.users.findOne(this.userId);
     }
 
-    return stamp += this.date.toLocaleTimeString();
-};
+    /**
+    * The message timestamp
+    * @method timestamp
+    * @returns {String} A string representing the time when the message was sent
+    */
+    timestamp() {
+        const now = new Date();
+        let stamp = '';
 
-/**
- * The message timestamp
- * @method isInFlight
- * @returns {Boolean} whether the message has been received yet
- */
-Message.prototype.isInFlight = function() {
-    return this.inFlight;
-};
+        if (now.toLocaleDateString() !== this.date.toLocaleDateString()) {
+            stamp += `${this.date.toLocaleDateString()} `;
+        }
 
-MessagesCollection = Message.collection;
+        stamp += this.date.toLocaleTimeString();
 
+        return stamp;
+    }
 
-//Create our message schema
-Message.appendSchema({
-    "userId":{
-        type:String,
-        regEx:SimpleSchema.RegEx.Id,
-        autoValue:function () {
-            if(this.isInsert){
+    /**
+    * The message timestamp
+    * @method isInFlight
+    * @returns {Boolean} whether the message has been received yet
+    */
+    isInFlight() {
+        return this.inFlight;
+    }
+}
+
+Message.attachCollection(MessagesCollection);
+
+// Create our message schema
+MessagesCollection.attachSchema(new SimpleSchema({
+    userId: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+        autoValue() {
+            if (this.isInsert) {
                 return this.userId;
             }
+            return undefined;
         },
         index: 1,
-        denyUpdate:true
+        denyUpdate: true,
     },
-    "conversationId":{
-        type:String,
-        regEx:SimpleSchema.RegEx.Id,
+    conversationId: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
         index: 1,
-        denyUpdate: true
+        denyUpdate: true,
     },
-    "body":{
-        type:String,
+    body: {
+        type: String,
     },
-    "date":{
-        type:Date,
-        autoValue:function() {
-            if(this.isInsert){
+    date: {
+        type: Date,
+        autoValue() {
+            if (this.isInsert) {
                 return ServerTime.date();
             }
+            return undefined;
         },
         index: -1,
-        denyUpdate:true
+        denyUpdate: true,
     },
-    "inFlight":{
-        type:Boolean,
-        autoValue:function() {
-            if(!this.isFromTrustedCode){
+    inFlight: {
+        type: Boolean,
+        autoValue() {
+            if (!this.isFromTrustedCode) {
                 return true;
-            }else if(this.isInsert){
+            } else if (this.isInsert) {
                 return false;
             }
+            return undefined;
         },
-        denyUpdate:true
-    }
-});
+        denyUpdate: true,
+    },
+}));
+
+export { Message, MessagesCollection };
