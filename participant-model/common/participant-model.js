@@ -1,15 +1,15 @@
 /* eslint-disable import/no-unresolved */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import { BaseModel } from 'meteor/socialize:BaseModel';
+import SimpleSchema from 'simpl-schema';
+import { BaseModel } from 'meteor/socialize:base-model';
 
 /* eslint-enable import/no-unresolved */
 
 import { ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
 
 
-const ParticipantsCollection = new Mongo.Collection('participants');
+export const ParticipantsCollection = new Mongo.Collection('participants');
 
 /**
  * The Participant Class
@@ -90,7 +90,7 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
         index: -1,
     },
     observing: {
-        type: [String],
+        type: Array,
         defaultValue: [],
         index: 1,
     },

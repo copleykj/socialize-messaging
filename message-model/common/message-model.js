@@ -1,8 +1,8 @@
 /* eslint-disable import/no-unresolved */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import { BaseModel } from 'meteor/socialize:BaseModel';
+import SimpleSchema from 'simpl-schema';
+import { BaseModel } from 'meteor/socialize:base-model';
 import { ServerTime } from 'meteor/socialize:server-time';
 
 /* eslint-enable import/no-unresolved */

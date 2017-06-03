@@ -2,8 +2,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { _ } from 'meteor/underscore';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import { BaseModel } from 'meteor/socialize:BaseModel';
+import SimpleSchema from 'simpl-schema';
+import { BaseModel } from 'meteor/socialize:base-model';
 import { User } from 'meteor/socialize:user-model';
 
 /* eslint-enable import/no-unresolved */
@@ -11,7 +11,7 @@ import { User } from 'meteor/socialize:user-model';
 import { Participant, ParticipantsCollection } from '../../participant-model/common/participant-model.js';
 import { Message, MessagesCollection } from '../../message-model/common/message-model.js';
 
-const ConversationsCollection = Mongo.Collection('conversations');
+const ConversationsCollection = new Mongo.Collection('conversations');
 
 /**
  * The Conversation Class
@@ -205,7 +205,7 @@ ConversationsCollection.attachSchema(new SimpleSchema({
         index: -1,
     },
     _participants: {
-        type: [String],
+        type: Array,
         defaultValue: [],
         index: 1,
     },
