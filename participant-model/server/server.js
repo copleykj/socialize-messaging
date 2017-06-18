@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { Meteor } from 'meteor/meteor';
 import { User } from 'meteor/socialize:user-model';
-import { UserPresence } from 'meteor/socialize:user-presense';
+import { UserPresence } from 'meteor/socialize:user-presence';
 
 /* eslint-enable import/no-unresolved */
 
