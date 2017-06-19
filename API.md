@@ -3,6 +3,8 @@
 A conversation is a group of users (participants) and the messages sent amongst them. To create a new conversation you construct a new instance of `Conversation` and then call it's `save` method. This will add the currently logged in user as a participant in the conversation. From there the currently logged in user can add further participants that they wish to have participate in the conversation.
 
 ```javascript
+import { Conversation } from 'meteor/socialize:messaging';
+
 let conversation = new Conversation().save();
 
 conversation.addParticipant( Meteor.users.findOne({username:"JohnDoe"}) );
@@ -14,19 +16,19 @@ conversation.sendMessage("Hello World!");
 
 ### Conversation (class) - Extends [BaseModel](https://github.com/copleykj/socialize-base-model) ###
 
-To gain access to the methods of a conversation you must first have an instance of a conversation. To obtain an instance of conversation you need to query the conversations collection (`Meteor.conversations`). A `findOne` will return a sinle instance and a `find` will return a cursor that when iterated over will return conversation instances. Ways of obtaining instances that belong to the current user are provided as extensions to the `User` class and are detail in the [User Extension](#user-extensions) section of this document
+To gain access to the methods of a conversation you must first have an instance of a conversation. To obtain an instance of conversation you need to query the `ConversationsCollection`. A `findOne` will return a sinle instance and a `find` will return a cursor that when iterated over will return conversation instances. Ways of obtaining instances that belong to the current user are provided as extensions to the `User` class and are detail in the [User Extension](#user-extensions) section of this document
 
 
 
 ```javascript
-let conversation = Meteor.conversations.findOne(); // Single Conversation Instance
+import { ConversationsCollection } from 'meteor/socialize:messaging';
 
-let conversations = Meteor.conversations.find(); // Cursor Returning Conversation Instances
+let conversation = ConversationsCollection.findOne(); // Single Conversation Instance
+
+let conversations = ConversationsCollection.find(); // Cursor Returning Conversation Instances
 ```
 
 #### Instance Methods ####
-
-*All examples assume an instance of conversation named `conversation` for JavaScript examples, and that the current context is a conversation for HTML (spacebars) examples.*
 
 **participants(limit, skip, sortBy, sortOrder)** - returns cursor of participants as instances of `Participant`.
 
@@ -114,7 +116,7 @@ A participant links a user with a conversation and holds information about the u
 Participants are created by calling the `addParticipant` or `addParticipants` method of a conversation and passing a user instance or an array of user instances for `addParticipants`
 
 ```javascript
-let conversation = Meteor.conversations.findOne();
+let conversation = ConversationsCollection.findOne();
 
 let user = Meteor.users.findOne({username:"JohnDoe"});
 
@@ -127,11 +129,17 @@ conversation.addParticipants(users);
 
 ### Participant (class) - Extends [BaseModel](https://github.com/copleykj/socialize-base-model) ###
 
-To gain access to the methods of a participant you must first have an instance of the `Participant` class. To obtain in instance you will need to query the participants collection (`Meteor.participants`) or use methods provided by the `Conversation` class to retrieve participants relevant to that conversation.
+To gain access to the methods of a participant you must first have an instance of the `Participant` class. To obtain an instance you will need to query the `ParticipantsCollection` or use methods provided by the `Conversation` class to retrieve participants relevant to that conversation.
+
+```javascript
+import { ParticipantsCollection, ConversationsCollectoin } from 'meteor/socialize:messaging';
+
+let participant = ParticipantsCollection.findOne();
+
+let conversationParticipants = ConversationsCollection.findOne().participants();
+```
 
 #### Instance Methods ###
-
-*All examples assume in instance of `Participant` named `participant` for JavaScript examples and that the current context is an instance of `Participant` for HTML (spacebars) examples.*
 
 **user()** - returns the User instance that the participant record represents.
 
@@ -157,19 +165,27 @@ if(participant.isObserving()){
 
 ## Messages ##
 
-A message is a bit of text linked to a conversation and a user and timestamped. Creating a new message is accomplished by calling the `sendMessage` method of a conversation and providing a string as it's only parameter.
+A message is a bit of text linked to a conversation and a user and timestamped. Creating a new message is accomplished by calling the `sendMessage` method of a conversation and providing a string as it's only parameter. 
 
 ```javascript
-let conversation = Meteor.conversations.findOne();
+let conversation = ConversationsCollection.findOne();
 
 conversation.sendMessage("Hello World!");
 ```
 
 ### Message (class) - Extends [BaseModel](https://github.com/copleykj/socialize-base-model) ###
 
-#### Instance Methods ####
+To gain access to the methods of a message you must first have an instance of the `Message` class. To obtain an instance you will need to query the `MessagesCollection` or use methods provided by the `Conversation` class to retrieve messages relevant to that conversation.
 
-*All examples assume an instance of `Message` named `message` for JavaScript examples and that the context is an instance of `Message` for HTML (spacebars) examples.*
+```javascript
+import { MessagesCollection, ConversationsCollectoin } from 'meteor/socialize:messaging';
+
+let message = MessagesCollection.findOne();
+
+let conversationMessages = ConversationsCollection.findOne().messages();
+```
+
+#### Instance Methods ####
 
 **user** - The user instance of the user who sent the message.
 
