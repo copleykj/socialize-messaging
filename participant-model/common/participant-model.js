@@ -9,7 +9,7 @@ import { BaseModel } from 'meteor/socialize:base-model';
 import { ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
 
 
-export const ParticipantsCollection = new Mongo.Collection('participants');
+const ParticipantsCollection = new Mongo.Collection('participants');
 
 /**
  * The Participant Class
@@ -104,3 +104,5 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
     },
 
 }));
+
+export { Participant, ParticipantsCollection };
