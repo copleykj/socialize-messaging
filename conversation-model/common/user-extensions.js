@@ -7,6 +7,13 @@ import { User } from 'meteor/socialize:user-model';
 import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
 import { ConversationsCollection } from '../common/conversation-model.js';
 
+const callWithPromise = (method, ...myParameters) => new Promise((resolve, reject) => {
+    Meteor.call(method, ...myParameters, (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+    });
+});
+
 User.methods({
     /**
     * Retrieve the conversations the user is currently involed in
@@ -50,7 +57,12 @@ User.methods({
      *
      *  @param  {Function}  callback callback with the signature of a Meteor method call
      */
-    findExistingConversationWithUsers(users, callback) {
-        Meteor.call('findExistingConversationWithUsers', users, callback);
+    async findExistingConversationWithUsers(users, callback) {
+        if (callback) {
+            return Meteor.call('findExistingConversationWithUsers', users, callback);
+        }
+        const conversation = await callWithPromise('findExistingConversationWithUsers', users);
+
+        return conversation;
     },
 });
