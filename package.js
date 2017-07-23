@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-
+/* global Package */
 Package.describe({
     name: 'socialize:messaging',
     summary: 'A social messaging package',
