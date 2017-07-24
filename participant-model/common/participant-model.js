@@ -9,7 +9,7 @@ import { BaseModel } from 'meteor/socialize:base-model';
 import { ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
 
 
-const ParticipantsCollection = new Mongo.Collection('participants');
+const ParticipantsCollection = new Mongo.Collection('socialize:participants');
 
 /**
  * The Participant Class

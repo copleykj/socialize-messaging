@@ -11,7 +11,7 @@ import { User } from 'meteor/socialize:user-model';
 import { Participant, ParticipantsCollection } from '../../participant-model/common/participant-model.js';
 import { Message, MessagesCollection } from '../../message-model/common/message-model.js';
 
-const ConversationsCollection = new Mongo.Collection('conversations');
+const ConversationsCollection = new Mongo.Collection('socialize:conversations');
 
 /**
  * The Conversation Class

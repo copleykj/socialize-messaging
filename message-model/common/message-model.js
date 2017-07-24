@@ -7,7 +7,7 @@ import { ServerTime } from 'meteor/socialize:server-time';
 
 /* eslint-enable import/no-unresolved */
 
-const MessagesCollection = new Mongo.Collection('messages');
+const MessagesCollection = new Mongo.Collection('socialize:messages');
 
 /**
  * The Message Class
