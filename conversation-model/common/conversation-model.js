@@ -195,6 +195,8 @@ class Conversation extends BaseModel {
     }
 }
 
+Conversation.attachCollection(ConversationsCollection);
+
 // The Schema for a Converation
 ConversationsCollection.attachSchema(new SimpleSchema({
     date: {
