@@ -90,12 +90,10 @@ MessagesCollection.attachSchema(new SimpleSchema({
     inFlight: {
         type: Boolean,
         autoValue() {
-            if (!this.isFromTrustedCode) {
-                return true;
-            } else if (this.isInsert) {
+            if (Meteor.isServer) {
                 return false;
             }
-            return undefined;
+            return true;
         },
         denyUpdate: true,
     },
