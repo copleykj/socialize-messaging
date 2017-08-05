@@ -18,7 +18,7 @@ In the spirit of keeping this and all of the packages in the [Socialize](https:/
 ## Installation ##
 
 ```shell
-meteor add socialize:messaging
+$ meteor add socialize:messaging
 ```
 
 ## Basic Usage ##
