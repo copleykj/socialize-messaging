@@ -42,6 +42,21 @@ User.methods({
         return ConversationsCollection.find({ _id: { $in: conversationIds } }, options);
     },
     /**
+     * Get the numer of unread conversations for the user
+     * @return {Number} The number or unread conversations
+     */
+    numUnreadConversations() {
+        return ParticipantsCollection.find({ userId: this._id, read: false }, { fields: { } }).count();
+    },
+    /**
+     * Get the most recently updated conversation that the user is participating in
+     * @return {Conversation} The newest conversation
+     */
+    newestConversation() {
+        const participant = ParticipantsCollection.findOne({ userId: this._id }, { fields: { conversationId: true }, sort: { date: -1 } });
+        return participant && ConversationsCollection.findOne(participant.conversationId);
+    },
+    /**
      *  Check if the user is participating in this conversation
      *  @param      {Conversation}  conversation   Conversation to check if the user is participating in
      *
