@@ -18,7 +18,6 @@ const ParticipantsCollection = new Mongo.Collection('socialize:participants');
 class Participant extends BaseModel {
     /**
      * Get the user that is the participant
-     * @method user
      * @returns {User} The user who is the participant in the conversation
      */
     user() {
@@ -27,7 +26,6 @@ class Participant extends BaseModel {
 
     /**
      * Get the conversation that the participant is involved in
-     * @method conversation
      * @returns {Conversation} The conversation the user is participating in
      */
     conversation() {
@@ -36,7 +34,6 @@ class Participant extends BaseModel {
 
     /**
      * Check if the user is observing the conversation
-     * @method isObserving
      * @returns {Boolean} Whether the user is observing the conversation
      */
     isObserving() {
@@ -45,7 +42,7 @@ class Participant extends BaseModel {
 
     /**
      * Check if the participant is typing
-     * @returns {Boo} Whether or not the participant is typing
+     * @returns {Boolean} Whether or not the participant is typing
      */
     isTyping() {
         return this.typing;

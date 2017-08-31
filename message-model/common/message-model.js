@@ -16,7 +16,6 @@ const MessagesCollection = new Mongo.Collection('socialize:messages');
 class Message extends BaseModel {
     /**
     * Get the user that wrote the message
-    * @method user
     * @returns {User} The user who wrote the message
     */
     user() {
@@ -25,7 +24,6 @@ class Message extends BaseModel {
 
     /**
     * The message timestamp
-    * @method timestamp
     * @returns {String} A string representing the time when the message was sent
     */
     timestamp() {
@@ -42,8 +40,7 @@ class Message extends BaseModel {
     }
 
     /**
-    * The message timestamp
-    * @method isInFlight
+    * The message's inFlight status
     * @returns {Boolean} whether the message has been received yet
     */
     isInFlight() {

@@ -30,7 +30,7 @@ let conversations = ConversationsCollection.find(); // Cursor Returning Conversa
 
 #### Instance Methods ####
 
-**participants(limit, skip, sortBy, sortOrder)** - returns cursor of participants as instances of `Participant`.
+**participants(options)** - returns cursor of participants as instances of `Participant`. Signature of `options` param is the same as you would pass to `Collection.find()`.
 
 ```javascript
 conversation.participants(/*optional params*/).forEach((participant) => {
@@ -54,10 +54,10 @@ if(conversation.isReadOnly()){
 }
 ```
 
-**messages(limit, skip, sortBy, sortOrder)** - returns a cursor of message instances for the conversation.
+**messages(options)** - returns a cursor of message instances for the conversation. Signature of `options` param is the same as you would pass to `Collection.find()`.
 
 ```javascript
-conversation.messages(/*optional params*/).forEach(function(message){
+conversation.messages().forEach(function(message){
 	console.log(message.user().username, ": ", message.body);
 });
 ```
@@ -165,7 +165,7 @@ if(participant.isObserving()){
 
 ## Messages ##
 
-A message is a bit of text linked to a conversation and a user and timestamped. Creating a new message is accomplished by calling the `sendMessage` method of a conversation and providing a string as it's only parameter. 
+A message is a bit of text linked to a conversation and a user and timestamped. Creating a new message is accomplished by calling the `sendMessage` method of a conversation and providing a string as it's only parameter.
 
 ```javascript
 let conversation = ConversationsCollection.findOne();
@@ -207,7 +207,7 @@ This package extends the [socialize:user-model](https://github.com/copleykj/soci
 
 #### Instance Methods ####
 
-**conversations(limit, skip, sortBy, sortOrder)** - Get the converations the user is participating in. This returns a mongo cursor which when iterated over will return `Conversation` instances.
+**conversations(options)** - Get the conversations the user is participating in. This returns a mongo cursor which when iterated over will return `Conversation` instances. Signature of `options` param is the same as you would pass to `Collection.find()`.
 
 ```javascript
 Meteor.user().conversations().forEach((conversation) => {

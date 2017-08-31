@@ -22,29 +22,10 @@ const ConversationsCollection = new Mongo.Collection('socialize:conversations');
 class Conversation extends BaseModel {
     /**
      * Fetch list of participants in the conversation
-     * @param   {Number}       limit     The maximum number of participants to return
-     * @param   {Number}       skip      The number of records to skip
-     * @param   {String}       sortBy    They key to sort on
-     * @param   {Number}       sortOrder The order in which to sort 1 for ascending, -1 for descending
-     * @returns {Mongo.Cursor} Cursor which upon iteration will return a Participant instance for each record
+     * @param  {Object} [options={}] Mongo style options object which is passed to Collection.find()
+     * @returns {Mongo.Cursor} Cursor which returns Participant instances
      */
-    participants(limit, skip, sortBy, sortOrder) {
-        const options = {};
-        const sort = {};
-
-        if (limit) {
-            options.limit = limit;
-        }
-
-        if (skip) {
-            options.skip = skip;
-        }
-
-        if (sortBy && sortOrder) {
-            sort[sortBy] = sortOrder;
-            options.sort = sort;
-        }
-
+    participants(options = {}) {
         const query = {
             conversationId: this._id,
             deleted: { $exists: false },
@@ -77,25 +58,10 @@ class Conversation extends BaseModel {
 
     /**
      * Retrieve the list of messages for the conversation
-     * @param   {Number}       limit     The maximum messages to retrieve
-     * @param   {Number}       skip      The number of records to skip
-     * @param   {String}       sortBy    The field to sort on
-     * @param   {Number}       sortOrder The order in which to sort 1 for ascending, -1 for decending
-     * @returns {Mongo.Cursor} Cursor which upon iteration will return a Message instance for each record
+     * @param  {Object} [options={}] Mongo style options object which is passed to Collection.find()
+     * @returns {Mongo.Cursor} Cursor which returns Message instances
      */
-    messages(limit, skip, sortBy, sortOrder) {
-        const options = {};
-        const sort = {};
-        if (limit) {
-            options.limit = limit;
-        }
-        if (skip) {
-            options.skip = skip;
-        }
-        if (sortBy && sortOrder) {
-            sort[sortBy] = sortOrder;
-            options.sort = sort;
-        }
+    messages(options = {}) {
         return MessagesCollection.find({ conversationId: this._id }, options);
     }
 
@@ -118,7 +84,6 @@ class Conversation extends BaseModel {
 
     /**
      * Add participants to the conversation
-     * @method addParticipants
      * @param {Array} participants An array of userId's to add as participants on the conversation
      */
     addParticipants(participants) {
@@ -133,7 +98,6 @@ class Conversation extends BaseModel {
 
     /**
      * Add participant to the conversation
-     * @method addParticipant
      * @param {User} participant A instance of User to add as a participant in the conversation
      */
     addParticipant(participant) {
@@ -148,7 +112,7 @@ class Conversation extends BaseModel {
      * Set the read state of the conversation for the current user
      *
      * This is set on the particpant object for the user
-     * @param {[[Type]]} state [[Description]]
+     * @param {Boolean} state The read state to set
      */
     updateReadState(state) {
         const participant = ParticipantsCollection.findOne({ conversationId: this._id, userId: Meteor.userId() });
@@ -178,7 +142,6 @@ class Conversation extends BaseModel {
 
     /**
      * Remove a participant from a conversation
-     * @method removeParticipant
      * @param {User} user The user to remove, defaults to the currently logged in user
      */
     removeParticipant(user) {
