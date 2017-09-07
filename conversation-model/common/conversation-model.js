@@ -39,6 +39,17 @@ class Conversation extends BaseModel {
     }
 
     /**
+     * Fetch list of participants in the conversation as the users they represent
+     * @param  {Object} [options={}] Mongo style options object which is passed to Collection.find()
+     * @returns {Mongo.Cursor} Cursor which returns User instances
+     */
+    participantsAsUsers(options = {}) {
+        const participantIds = this.participants({ fields: { userId: true } }).map(participant => participant.userId);
+
+        return Meteor.users.find({ _id: { $in: participantIds } }, options);
+    }
+
+    /**
      * Check if the conversation has not been read by a the current user
      * @returns {Boolean} Whether the conversation is unread
      */

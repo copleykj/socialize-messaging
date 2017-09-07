@@ -33,8 +33,16 @@ let conversations = ConversationsCollection.find(); // Cursor Returning Conversa
 **participants(options)** - returns cursor of participants as instances of `Participant`. Signature of `options` param is the same as you would pass to `Collection.find()`.
 
 ```javascript
-conversation.participants(/*optional params*/).forEach((participant) => {
+conversation.participants().forEach((participant) => {
 	console.log(participant.user().username);
+});
+```
+
+**participantsAsUsers(options)** - returns a cursor of users as instances of `User` that each participant represents. Signature of `options` param is the same as you would pass to `Collection.find()` and it is passed to the `Meteor.users.find()`
+
+```javascript
+conversation.participantsAsUsers().forEach((user) => {
+	console.log(user.username);
 });
 ```
 
