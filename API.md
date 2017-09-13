@@ -231,6 +231,14 @@ if(!currentUser.isParticipatingIn(conversation)){
 }
 ```
 
+**isObserving(conversation)** - check if the user is currently observing a conversation.
+
+```javascript
+if(currentUser.isObserving(conversation)){
+	console.log(`${curentUser.username} is observing the conversation`);
+}
+```
+
 **findExistingConversationWithUsers(users, callback)** - Find and return the \_id of an existing conversation between a set of users. This makes a server call and can take a standard signature callback to handle the result. If a callback is not passed then a promise will be returned which can be handled with async/await.
 
 ```javascript

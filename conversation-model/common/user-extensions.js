@@ -55,6 +55,14 @@ User.methods({
         return !!ParticipantsCollection.findOne({ userId: this._id, conversationId: conversation._id, deleted: { $exists: false } });
     },
     /**
+     * Check if the user is observing a particular conversation
+     * @param  {Conversation}  conversation A instance of conversation to check if the user is observing
+     * @return {Boolean}        Whether the user is observing or not
+     */
+    isObserving(conversation) {
+        return !!ParticipantsCollection.findOne({ userId: this._id, conversationId: conversation._id, 'observing.0': { $exists: true } });
+    },
+    /**
      *  Find existing conversation between this user a number of other users
      *
      *  @param  {Array} users   An array of userId's to check against
