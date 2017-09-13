@@ -231,7 +231,7 @@ if(!currentUser.isParticipatingIn(conversation)){
 }
 ```
 
-**findExistingConversationWithUsers(users, callback)** - Find and return the \_id of an existing conversation between a set of users. This makes a server call so a callback that takes the standard (error, result) params is required
+**findExistingConversationWithUsers(users, callback)** - Find and return the \_id of an existing conversation between a set of users. This makes a server call and can take a standard signature callback to handle the result. If a callback is not passed then a promise will be returned which can be handled with async/await.
 
 ```javascript
 let participants = [user1._id, user2._id];
