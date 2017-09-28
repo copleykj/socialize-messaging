@@ -37,7 +37,7 @@ class Participant extends BaseModel {
      * @returns {Boolean} Whether the user is observing the conversation
      */
     isObserving() {
-        return this.observing && this.observing.length > 0;
+        return !!this.observing.length > 0;
     }
 
     /**
@@ -45,7 +45,7 @@ class Participant extends BaseModel {
      * @returns {Boolean} Whether or not the participant is typing
      */
     isTyping() {
-        return this.typing;
+        return !!this.typing && this.typing.length > 0;
     }
 }
 
@@ -96,10 +96,13 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
         regEx: SimpleSchema.RegEx.Id,
     },
     typing: {
-        type: Boolean,
-        defaultValue: false,
+        type: Array,
+        defaultValue: [],
     },
-
+    'typing.$': {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+    },
 }));
 
 export { Participant, ParticipantsCollection };
