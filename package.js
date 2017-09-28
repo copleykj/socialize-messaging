@@ -13,6 +13,8 @@ Package.onUse(function _(api) {
         'check', 'socialize:user-model@1.0.0', 'socialize:user-presence@1.0.0', 'socialize:server-time@1.0.0',
     ]);
 
+    api.use('cultofcoders:redis-oplog@1.2.0', { weak: true });
+
     api.mainModule('server.js', 'server');
     api.mainModule('common.js');
 });

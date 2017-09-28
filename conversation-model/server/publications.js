@@ -2,9 +2,16 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-/* eslint-enable import/no-unresolved */
 
 import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
+
+let SyntheticMutator;
+
+try {
+    SyntheticMutator = require('meteor/cultofcoders:redis-oplog').SyntheticMutator; // eslint-disable-line
+} catch (err) {
+    SyntheticMutator = null;
+}
 
 /**
  * This publication when subscribed to, updates the state of the participant
@@ -43,7 +50,7 @@ Meteor.publish('viewingConversation', function viewingConversationPublication(co
 
 /**
  * This publication when subscribed to sets the typing state of a participant in a conversation to true. When stopped it sets it to false.
- * @param   {String}   conversationId The _id of the conversation
+ * @param   {String}   conversationId The _id of the participant
  */
 Meteor.publish('typing', function typingPublication(conversationId) {
     check(conversationId, String);
@@ -51,6 +58,8 @@ Meteor.publish('typing', function typingPublication(conversationId) {
     if (!this.userId) {
         return this.ready();
     }
+
+    const participant = ParticipantsCollection.findOne({ conversationId, userId: this.userId });
 
     const sessionId = this._session.id;
 
@@ -62,13 +71,24 @@ Meteor.publish('typing', function typingPublication(conversationId) {
         $pull: { typing: sessionId },
     };
 
-    ParticipantsCollection.update({
-        conversationId, userId: this.userId,
-    }, typingModifier);
+    if (SyntheticMutator) {
+        SyntheticMutator.update(`conversation::${conversationId}::participants`, participant._id, typingModifier);
 
-    this.onStop(() => {
-        ParticipantsCollection.update({ conversationId, userId: this.userId }, notTypingModifier);
-    });
+        this.onStop(() => {
+            SyntheticMutator.update(`conversation::${conversationId}::participants`, participant._id, notTypingModifier);
+        });
+    } else {
+        participant.update(typingModifier, {
+            channel: `conversation::${conversationId}::participants`,
+        });
+
+        this.onStop(() => {
+            participant.update(notTypingModifier, {
+                channel: `conversation::${conversationId}::participants`,
+            });
+        });
+    }
+
 
     this.ready();
 
