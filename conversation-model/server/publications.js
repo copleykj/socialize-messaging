@@ -52,14 +52,22 @@ Meteor.publish('typing', function typingPublication(conversationId) {
         return this.ready();
     }
 
+    const sessionId = this._session.id;
+
+    const typingModifier = {
+        $addToSet: { typing: sessionId },
+    };
+
+    const notTypingModifier = {
+        $pull: { typing: sessionId },
+    };
+
     ParticipantsCollection.update({
         conversationId, userId: this.userId,
-    }, {
-        $set: { typing: true },
-    });
+    }, typingModifier);
 
     this.onStop(() => {
-        ParticipantsCollection.update({ conversationId, userId: this.userId }, { $set: { typing: false } });
+        ParticipantsCollection.update({ conversationId, userId: this.userId }, notTypingModifier);
     });
 
     this.ready();
