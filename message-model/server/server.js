@@ -42,7 +42,6 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
         $set: { read: false, date },
     }, {
         multi: true,
-    }, {
         channel: `conversation::${document.conversationId}::participants`,
     });
 
