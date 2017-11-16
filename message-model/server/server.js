@@ -36,7 +36,7 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
         $set: { read: false, date },
     }, {
         multi: true,
-        channel: `conversation::${document.conversationId}::participants`,
+        namespace: `conversation::${document.conversationId}`,
     });
 
     // update the date on the conversation for sorting the conversation from newest to oldest

@@ -33,7 +33,7 @@ class Conversation extends BaseModel {
 
         const newOptions = {
             ...options,
-            channel: `conversation::${this._id}::participants`,
+            namespace: `conversation::${this._id}`,
         };
 
         if (Meteor.isClient) {
@@ -80,7 +80,7 @@ class Conversation extends BaseModel {
     messages(options = {}) {
         const newOptions = {
             ...options,
-            channel: `conversation::${this._id}::messages`,
+            namespace: `conversation::${this._id}`,
         };
         return MessagesCollection.find({ conversationId: this._id }, newOptions);
     }
@@ -100,7 +100,7 @@ class Conversation extends BaseModel {
      */
     sendMessage(body) {
         new Message({ body, conversationId: this._id, inFlight: true }).save({
-            channel: `conversation::${this._id}::messages`,
+            namespace: `conversation::${this._id}`,
         });
     }
 
@@ -125,7 +125,7 @@ class Conversation extends BaseModel {
     addParticipant(participant) {
         if (participant instanceof User) {
             new Participant({ userId: participant._id, conversationId: this._id }).save({
-                channel: `conversation::${this._id}::participants`,
+                namespace: `conversation::${this._id}`,
             });
         } else {
             throw new Meteor.Error('User Required', 'Each participant must be an instance of User Class');
@@ -141,7 +141,7 @@ class Conversation extends BaseModel {
     updateReadState(state) {
         const participant = ParticipantsCollection.findOne({ conversationId: this._id, userId: Meteor.userId() });
         participant.update({ $set: { read: state } }, {
-            channel: `conversation::${this._id}::participants`,
+            namespace: `conversation::${this._id}`,
         });
     }
 
@@ -178,11 +178,11 @@ class Conversation extends BaseModel {
         if (Meteor.isClient) {
             const participant = ParticipantsCollection.findOne(query);
             participant && participant.update(modifier, {
-                channel: `conversation::${this._id}::participants`,
+                namespace: `conversation::${this._id}`,
             });
         } else {
             ParticipantsCollection.update(query, modifier, {
-                channel: `conversation::${this._id}::participants`,
+                namespace: `conversation::${this._id}`,
             });
         }
     }
