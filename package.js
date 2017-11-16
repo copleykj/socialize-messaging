@@ -10,7 +10,7 @@ Package.onUse(function _(api) {
     api.versionsFrom('1.3');
 
     api.use([
-        'check', 'socialize:user-model@1.0.0', 'socialize:user-presence@1.0.0', 'socialize:server-time@1.0.0',
+        'check', 'socialize:user-presence@1.0.0', 'socialize:server-time@1.0.0',
         'reywood:publish-composite@1.5.2',
     ]);
 
