@@ -30,7 +30,7 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
     ParticipantsCollection.update({
         conversationId: document.conversationId,
         observing: {
-            $not: { $size: 0 },
+            $size: 0,
         },
     }, {
         $set: { read: false, date },
