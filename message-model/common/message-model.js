@@ -87,10 +87,13 @@ MessagesCollection.attachSchema(new SimpleSchema({
     inFlight: {
         type: Boolean,
         autoValue() {
-            if (Meteor.isServer) {
-                return false;
+            if (this.isInsert) {
+                if (Meteor.isServer) {
+                    return false;
+                }
+                return true;
             }
-            return true;
+            return undefined;
         },
         denyUpdate: true,
     },
