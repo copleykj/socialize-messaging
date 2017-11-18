@@ -11,6 +11,32 @@ import { ConversationsCollection } from '../../conversation-model/common/convers
 
 const ParticipantsCollection = new Mongo.Collection('socialize:participants');
 
+if (ParticipantsCollection.configureRedisOplog) {
+    ParticipantsCollection.configureRedisOplog({
+        mutation(options, { selector, doc }) {
+            let conversationId = selector.conversationId || (doc && doc.conversationId);
+
+            if (!conversationId && selector._id) {
+                const participant = ParticipantsCollection.findOne({ _id: selector._id }, { fields: { conversationId: 1 } });
+                conversationId = participant && participant.conversationId;
+            }
+
+            if (conversationId) {
+                Object.assign(options, {
+                    namespace: `conversations::${conversationId}`,
+                });
+            }
+        },
+        cursor(options, selector) {
+            if (selector.conversationId) {
+                Object.assign(options, {
+                    namespace: `conversations::${selector.conversationId}`,
+                });
+            }
+        },
+    });
+}
+
 /**
  * The Participant Class
  * @class Participant

@@ -37,7 +37,6 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
         $set: { read: false },
     }, {
         multi: true,
-        namespace: `conversation::${document.conversationId}`,
     });
 
     ParticipantsCollection.update({ userId }, { $set: { date } });

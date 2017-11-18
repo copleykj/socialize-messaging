@@ -78,11 +78,7 @@ class Conversation extends BaseModel {
      * @returns {Mongo.Cursor} Cursor which returns Message instances
      */
     messages(options = {}) {
-        const newOptions = {
-            ...options,
-            namespace: `conversation::${this._id}`,
-        };
-        return MessagesCollection.find({ conversationId: this._id }, newOptions);
+        return MessagesCollection.find({ conversationId: this._id }, options);
     }
 
     /**
@@ -99,9 +95,7 @@ class Conversation extends BaseModel {
      * @param {Function} callback The callback to run upon insertion of the document
      */
     sendMessage(body) {
-        new Message({ body, conversationId: this._id, inFlight: true }).save({
-            namespace: `conversation::${this._id}`,
-        });
+        new Message({ body, conversationId: this._id, inFlight: true }).save();
     }
 
     /**
@@ -124,9 +118,7 @@ class Conversation extends BaseModel {
      */
     addParticipant(participant) {
         if (participant instanceof User) {
-            new Participant({ userId: participant._id, conversationId: this._id }).save({
-                namespace: `conversation::${this._id}`,
-            });
+            new Participant({ userId: participant._id, conversationId: this._id }).save();
         } else {
             throw new Meteor.Error('User Required', 'Each participant must be an instance of User Class');
         }
@@ -140,9 +132,7 @@ class Conversation extends BaseModel {
      */
     updateReadState(state) {
         const participant = ParticipantsCollection.findOne({ conversationId: this._id, userId: Meteor.userId() });
-        participant.update({ $set: { read: state } }, {
-            namespace: `conversation::${this._id}`,
-        });
+        participant.update({ $set: { read: state } });
     }
 
     /**
@@ -177,13 +167,9 @@ class Conversation extends BaseModel {
 
         if (Meteor.isClient) {
             const participant = ParticipantsCollection.findOne(query);
-            participant && participant.update(modifier, {
-                namespace: `conversation::${this._id}`,
-            });
+            participant && participant.update(modifier);
         } else {
-            ParticipantsCollection.update(query, modifier, {
-                namespace: `conversation::${this._id}`,
-            });
+            ParticipantsCollection.update(query, modifier);
         }
     }
 }
