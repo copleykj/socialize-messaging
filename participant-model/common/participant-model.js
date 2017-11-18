@@ -82,7 +82,12 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
     date: {
         type: Date,
         autoValue() {
-            return new Date();
+            if (this.isInsert) {
+                return new Date();
+            } else if (this.isSet && this.isFromTrustedCode) {
+                return this.value;
+            }
+            return undefined;
         },
         index: -1,
     },

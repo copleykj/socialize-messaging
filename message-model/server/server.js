@@ -32,12 +32,15 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
         observing: {
             $size: 0,
         },
+        read: true,
     }, {
-        $set: { read: false, date },
+        $set: { read: false },
     }, {
         multi: true,
         namespace: `conversation::${document.conversationId}`,
     });
+
+    ParticipantsCollection.update({ userId }, { $set: { date } });
 
     // update the date on the conversation for sorting the conversation from newest to oldest
     ConversationsCollection.update(document.conversationId, { $set: { date } });
