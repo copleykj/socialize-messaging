@@ -6,7 +6,6 @@ import { publishComposite } from 'meteor/reywood:publish-composite';
 
 import SimpleSchema from 'simpl-schema';
 
-import { MessagesCollection } from '../../message-model/common/message-model.js';
 import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
 import { Conversation, ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
 
@@ -83,7 +82,7 @@ publishComposite('socialize.conversations', function publishConversations(option
 
     return {
         find() {
-            return ParticipantsCollection.find({ userId: this.userId, deleted: { $exists: false } }, options);
+            return ParticipantsCollection.find({ userId: this.userId, deleted: { $exists: false } }, newOptions);
         },
         children: [
             {
