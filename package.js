@@ -14,8 +14,6 @@ Package.onUse(function _(api) {
         'reywood:publish-composite@1.5.2',
     ]);
 
-    api.use('cultofcoders:redis-oplog@1.2.0', { weak: true });
-
     api.mainModule('server.js', 'server');
     api.mainModule('common.js');
 });

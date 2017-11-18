@@ -11,11 +11,10 @@ import { Conversation, ConversationsCollection } from '../../conversation-model/
 
 let SyntheticMutator;
 
-try {
+if (ParticipantsCollection.configureRedisOplog) {
     SyntheticMutator = require('meteor/cultofcoders:redis-oplog').SyntheticMutator; // eslint-disable-line
-} catch (err) {
-    SyntheticMutator = null;
 }
+
 
 const publicationOptionsSchema = new SimpleSchema({
     limit: {
