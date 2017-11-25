@@ -21,14 +21,14 @@ if (MessagesCollection.configureRedisOplog) {
 
             if (conversationId) {
                 Object.assign(options, {
-                    namespace: `conversations::${conversationId}`,
+                    namespace: conversationId,
                 });
             }
         },
         cursor(options, selector) {
             if (selector.conversationId) {
                 Object.assign(options, {
-                    namespace: `conversations::${selector.conversationId}`,
+                    namespace: selector.conversationId,
                 });
             }
         },
