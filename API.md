@@ -140,7 +140,7 @@ conversation.addParticipants(users);
 To gain access to the methods of a participant you must first have an instance of the `Participant` class. To obtain an instance you will need to query the `ParticipantsCollection` or use methods provided by the `Conversation` class to retrieve participants relevant to that conversation.
 
 ```javascript
-import { ParticipantsCollection, ConversationsCollectoin } from 'meteor/socialize:messaging';
+import { ParticipantsCollection, ConversationsCollection } from 'meteor/socialize:messaging';
 
 let participant = ParticipantsCollection.findOne();
 
