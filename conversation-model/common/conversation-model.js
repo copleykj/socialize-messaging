@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { _ } from 'meteor/underscore';
 import SimpleSchema from 'simpl-schema';
 import { BaseModel } from 'meteor/socialize:base-model';
 import { User } from 'meteor/socialize:user-model';
@@ -103,8 +102,8 @@ class Conversation extends BaseModel {
      * @param {Array} participants An array of userId's to add as participants on the conversation
      */
     addParticipants(participants) {
-        if (_.isArray(participants)) {
-            _.each(participants, (participant) => {
+        if (Array.isArray(participants)) {
+            participants.forEach((participant) => {
                 this.addParticipant(participant);
             });
         } else {
@@ -176,7 +175,7 @@ class Conversation extends BaseModel {
 
 Conversation.attachCollection(ConversationsCollection);
 
-// The Schema for a Converation
+// The Schema for a Conversation
 ConversationsCollection.attachSchema(new SimpleSchema({
     date: {
         type: Date,
