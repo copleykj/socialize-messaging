@@ -130,27 +130,6 @@ class Conversation extends BaseModel {
     }
 
     /**
-     * Get a serialized sentence of the users who have read the conversation
-     * @returns {String} A string list of users that have read the current state of the conversation
-     */
-    readBy() {
-        const readBy = [];
-
-        this.participants().forEach((participant) => {
-            let user;
-            if (participant.userId !== Meteor.userId() && participant.read) {
-                user = Meteor.users.findOne(participant.userId, { fields: { username: true } });
-
-                if (user) {
-                    readBy.push(user.username);
-                }
-            }
-        });
-
-        return readBy.length > 0 && `read by ${_.toSentenceSerial(readBy)}`;
-    }
-
-    /**
      * Remove a participant from a conversation
      * @param {User} user The user to remove, defaults to the currently logged in user
      */
