@@ -85,7 +85,7 @@ class Conversation extends BaseModel {
      * @returns {Message} An instance of Message which was the last sent message for the conversation
      */
     lastMessage() {
-        return MessagesCollection.findOne({ conversationId: this._id }, { sort: { date: -1 }, limit: 1 });
+        return MessagesCollection.findOne({ conversationId: this._id }, { sort: { createdAt: -1 }, limit: 1 });
     }
 
     /**
@@ -135,27 +135,6 @@ class Conversation extends BaseModel {
     }
 
     /**
-     * Get a serialized sentence of the users who have read the conversation
-     * @returns {String} A string list of users that have read the current state of the conversation
-     */
-    readBy() {
-        const readBy = [];
-
-        this.participants().forEach((participant) => {
-            let user;
-            if (participant.userId !== Meteor.userId() && participant.read) {
-                user = Meteor.users.findOne(participant.userId, { fields: { username: true } });
-
-                if (user) {
-                    readBy.push(user.username);
-                }
-            }
-        });
-
-        return readBy.length > 0 && `read by ${_.toSentenceSerial(readBy)}`;
-    }
-
-    /**
      * Remove a participant from a conversation
      * @param {User} user The user to remove, defaults to the currently logged in user
      */
@@ -177,10 +156,25 @@ Conversation.attachCollection(ConversationsCollection);
 
 // The Schema for a Conversation
 ConversationsCollection.attachSchema(new SimpleSchema({
-    date: {
+    createAt: {
         type: Date,
         autoValue() {
-            return new Date();
+              if (this.isInsert) {
+                  return ServerTime.date();
+              }
+              return undefined;
+        },
+        index: -1,
+        denyUpdate: true,
+    },
+    // Latest update date
+    updatedAt: {
+        type: Date,
+        optional: true,
+        autoValue() {
+          if (this.isInsert || this.isUpdate) {
+              return ServerTime.date();
+          }
         },
         index: -1,
     },

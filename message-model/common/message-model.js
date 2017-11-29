@@ -98,9 +98,9 @@ MessagesCollection.attachSchema(new SimpleSchema({
         denyUpdate: true,
     },
     body: {
-        type: String,
+        type: SimpleSchema.oneOf(String, Object),
     },
-    date: {
+    createAt: {
         type: Date,
         autoValue() {
             if (this.isInsert) {
@@ -110,6 +110,16 @@ MessagesCollection.attachSchema(new SimpleSchema({
         },
         index: -1,
         denyUpdate: true,
+    },
+    // Latest update date
+    updatedAt: {
+        type: Date,
+        optional: true,
+        autoValue() {
+          if (this.isInsert || this.isUpdate)
+            return ServerTime.date();
+        },
+        index: -1,
     },
     inFlight: {
         type: Boolean,

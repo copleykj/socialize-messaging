@@ -105,15 +105,24 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
         type: Boolean,
         optional: true,
     },
-    date: {
+    createAt: {
         type: Date,
         autoValue() {
             if (this.isInsert) {
                 return new Date();
-            } else if (this.isSet && this.isFromTrustedCode) {
-                return this.value;
             }
             return undefined;
+        },
+        denyUpdate: true,
+        index: -1
+    },
+    // Latest update date
+    updatedAt: {
+        type: Date,
+        optional: true,
+        autoValue() {
+          if (this.isInsert || this.isUpdate)
+            return new Date();
         },
         index: -1,
     },
