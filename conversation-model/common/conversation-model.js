@@ -4,6 +4,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { BaseModel } from 'meteor/socialize:base-model';
 import { User } from 'meteor/socialize:user-model';
+import { ServerTime } from 'meteor/socialize:server-time';
 
 /* eslint-enable import/no-unresolved */
 
@@ -159,22 +160,19 @@ ConversationsCollection.attachSchema(new SimpleSchema({
     createAt: {
         type: Date,
         autoValue() {
-              if (this.isInsert) {
-                  return ServerTime.date();
-              }
-              return undefined;
+            if (this.isInsert) {
+                return ServerTime.date();
+            }
+            return undefined;
         },
         index: -1,
         denyUpdate: true,
     },
-    // Latest update date
     updatedAt: {
         type: Date,
         optional: true,
         autoValue() {
-          if (this.isInsert || this.isUpdate) {
-              return ServerTime.date();
-          }
+            return ServerTime.date();
         },
         index: -1,
     },
