@@ -151,10 +151,25 @@ Conversation.attachCollection(ConversationsCollection);
 
 // The Schema for a Conversation
 ConversationsCollection.attachSchema(new SimpleSchema({
-    date: {
+    createAt: {
         type: Date,
         autoValue() {
-            return new Date();
+              if (this.isInsert) {
+                  return ServerTime.date();
+              }
+              return undefined;
+        },
+        index: -1,
+        denyUpdate: true,
+    },
+    // Latest update date
+    updatedAt: {
+        type: Date,
+        optional: true,
+        autoValue() {
+          if (this.isInsert || this.isUpdate) {
+              return ServerTime.date();
+          }
         },
         index: -1,
     },
