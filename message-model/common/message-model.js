@@ -89,7 +89,6 @@ MessagesCollection.attachSchema(new SimpleSchema({
         type: Date,
         optional: true,
         autoValue() {
-          if (this.isInsert || this.isUpdate)
             return ServerTime.date();
         },
         index: -1,
