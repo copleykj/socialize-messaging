@@ -43,7 +43,7 @@ User.methods({
             { userId: this._id },
             { fields: { conversationId: true }, reactive: false },
         ).map(participant => participant.conversationId);
-        return conversations && ConversationsCollection.findOne({ _id: { $in: conversations } }, { sort: { date: -1 } });
+        return conversations && ConversationsCollection.findOne({ _id: { $in: conversations } }, { sort: { createdAt: -1 } });
     },
     /**
      *  Check if the user is participating in this conversation

@@ -80,7 +80,7 @@ class Conversation extends BaseModel {
      * @returns {Message} An instance of Message which was the last sent message for the conversation
      */
     lastMessage() {
-        return MessagesCollection.findOne({ conversationId: this._id }, { sort: { date: -1 }, limit: 1 });
+        return MessagesCollection.findOne({ conversationId: this._id }, { sort: { createdAt: -1 }, limit: 1 });
     }
 
     /**
