@@ -9,6 +9,33 @@ import { ServerTime } from 'meteor/socialize:server-time';
 
 const MessagesCollection = new Mongo.Collection('socialize:messages');
 
+if (MessagesCollection.configureRedisOplog) {
+    MessagesCollection.configureRedisOplog({
+        mutation(options, { selector, doc }) {
+            let conversationId = (selector && selector.conversationId) || (doc && doc.conversationId);
+
+            if (!conversationId && selector._id) {
+                const participant = MessagesCollection.findOne({ _id: selector._id }, { fields: { conversationId: 1 } });
+                conversationId = participant && participant.conversationId;
+            }
+
+            if (conversationId) {
+                Object.assign(options, {
+                    namespace: conversationId,
+                });
+            }
+        },
+        cursor(options, selector) {
+            if (selector.conversationId) {
+                Object.assign(options, {
+                    namespace: selector.conversationId,
+                });
+            }
+        },
+    });
+}
+
+
 /**
  * The Message Class
  * @class Message

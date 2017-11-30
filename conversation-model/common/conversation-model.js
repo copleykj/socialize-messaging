@@ -31,11 +31,16 @@ class Conversation extends BaseModel {
             deleted: { $exists: false },
         };
 
+        const newOptions = {
+            ...options,
+            namespace: `conversation::${this._id}`,
+        };
+
         if (Meteor.isClient) {
             query.userId = { $ne: Meteor.userId() };
         }
 
-        return ParticipantsCollection.find(query, options);
+        return ParticipantsCollection.find(query, newOptions);
     }
 
     /**
@@ -89,8 +94,8 @@ class Conversation extends BaseModel {
      * @param {String}   body     The body of the message
      * @param {Function} callback The callback to run upon insertion of the document
      */
-    sendMessage(body, callback) {
-        new Message({ body, conversationId: this._id, inFlight: true }).save(callback);
+    sendMessage(body) {
+        new Message({ body, conversationId: this._id, inFlight: true }).save();
     }
 
     /**

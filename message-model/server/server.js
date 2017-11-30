@@ -25,28 +25,25 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
     // Grab the current time
     const date = ServerTime.date();
 
-    /* Find out who is currently looking at the message.. We don't want to
-     * set their status to unread as it will trigger notifications for the user
+    /* Only update participants who aren't observing the conversation.
+     * If we update users who are reading the conversation it will show the
+     * conversation as unread to the user. This would be bad UX design
      *
      * Tracking observations is done throught the "viewingConversation" subscription
     */
-    const observers = ParticipantsCollection.find({
+    ParticipantsCollection.update({
         conversationId: document.conversationId,
         observing: {
-            $not: { $size: 0 },
+            $size: 0,
         },
+        read: true,
     }, {
-        fields: { userId: 1 },
-    }).map(participant => participant.userId);
-
-    // Set the read status to false for users not observing the converssation
-    ParticipantsCollection.update({
-        conversationId: document.conversationId, userId: { $nin: observers },
-    }, {
-        $set: { read: false, date },
+        $set: { read: false },
     }, {
         multi: true,
     });
+
+    ParticipantsCollection.update({ userId }, { $set: { date } });
 
     // update the date on the conversation for sorting the conversation from newest to oldest
     ConversationsCollection.update(document.conversationId, { $set: { date } });
