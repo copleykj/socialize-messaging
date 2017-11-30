@@ -88,14 +88,13 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
             return undefined;
         },
         denyUpdate: true,
-        index: -1
+        index: -1,
     },
     // Latest update date
     updatedAt: {
         type: Date,
         optional: true,
         autoValue() {
-          if (this.isInsert || this.isUpdate)
             return new Date();
         },
         index: -1,
