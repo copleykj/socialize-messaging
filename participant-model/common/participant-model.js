@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { BaseModel } from 'meteor/socialize:base-model';
+import { ServerTime } from 'meteor/socialize:server-time';
 
 /* eslint-enable import/no-unresolved */
 
@@ -83,7 +84,7 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
         type: Date,
         autoValue() {
             if (this.isInsert) {
-                return new Date();
+                return ServerTime.date();
             }
             return undefined;
         },
@@ -95,7 +96,7 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
         type: Date,
         optional: true,
         autoValue() {
-            return new Date();
+            return ServerTime.date();
         },
         index: -1,
     },

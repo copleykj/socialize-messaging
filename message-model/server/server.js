@@ -1,3 +1,7 @@
+/* eslint-disable import/no-unresolved */
+import { ServerTime } from 'meteor/socialize:server-time';
+/* eslint-enable import/no-unresolved */
+
 import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
 import { ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
 import { MessagesCollection } from '../common/message-model.js';
@@ -19,7 +23,7 @@ MessagesCollection.allow({
 // After a message is sent we need to update the ParticipantsCollection and ConversationsCollection
 MessagesCollection.after.insert(function afterInsert(userId, document) {
     // Grab the current time
-    const date = new Date();
+    const date = ServerTime.date();
 
     /* Find out who is currently looking at the message.. We don't want to
      * set their status to unread as it will trigger notifications for the user
