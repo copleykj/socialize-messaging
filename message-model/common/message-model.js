@@ -46,7 +46,7 @@ class Message extends BaseModel {
     * @returns {User} The user who wrote the message
     */
     user() {
-        return Meteor.users.findOne(this.userId);
+        return Meteor.users.findOne({ _id: this.userId });
     }
 
     /**

@@ -48,7 +48,7 @@ class Participant extends BaseModel {
      * @returns {User} The user who is the participant in the conversation
      */
     user() {
-        return Meteor.users.findOne(this.userId);
+        return Meteor.users.findOne({ _id: this.userId });
     }
 
     /**
@@ -56,7 +56,7 @@ class Participant extends BaseModel {
      * @returns {Conversation} The conversation the user is participating in
      */
     conversation() {
-        return ConversationsCollection.findOne(this.conversationId);
+        return ConversationsCollection.findOne({ _id: this.conversationId });
     }
 
     /**
