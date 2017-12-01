@@ -31,16 +31,11 @@ class Conversation extends BaseModel {
             deleted: { $exists: false },
         };
 
-        const newOptions = {
-            ...options,
-            namespace: `conversation::${this._id}`,
-        };
-
         if (Meteor.isClient) {
             query.userId = { $ne: Meteor.userId() };
         }
 
-        return ParticipantsCollection.find(query, newOptions);
+        return ParticipantsCollection.find(query, options);
     }
 
     /**
