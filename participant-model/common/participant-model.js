@@ -106,7 +106,7 @@ ParticipantsCollection.attachSchema(new SimpleSchema({
         type: Boolean,
         optional: true,
     },
-    createAt: {
+    createdAt: {
         type: Date,
         autoValue() {
             if (this.isInsert) {

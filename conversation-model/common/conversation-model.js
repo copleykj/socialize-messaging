@@ -152,7 +152,7 @@ Conversation.attachCollection(ConversationsCollection);
 
 // The Schema for a Conversation
 ConversationsCollection.attachSchema(new SimpleSchema({
-    createAt: {
+    createdAt: {
         type: Date,
         autoValue() {
             if (this.isInsert) {

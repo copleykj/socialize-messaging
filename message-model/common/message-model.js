@@ -100,7 +100,7 @@ MessagesCollection.attachSchema(new SimpleSchema({
     body: {
         type: SimpleSchema.oneOf(String, Object),
     },
-    createAt: {
+    createdAt: {
         type: Date,
         autoValue() {
             if (this.isInsert) {
