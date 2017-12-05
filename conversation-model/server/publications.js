@@ -199,8 +199,6 @@ Meteor.publish('socialize.viewingConversation', function viewingConversationPubl
     }, {
         $addToSet: { observing: sessionId },
         $set: { read: true },
-    }, {
-        namespace: `conversation::${conversationId}`,
     });
 
     this.onStop(() => {
@@ -208,8 +206,6 @@ Meteor.publish('socialize.viewingConversation', function viewingConversationPubl
             conversationId, userId: this.userId,
         }, {
             $pull: { observing: sessionId },
-        }, {
-            namespace: `conversation::${conversationId}`,
         });
     });
 
@@ -245,20 +241,16 @@ Meteor.publish('socialize.typing', function typingPublication(conversationId) {
     const collectionName = participant.getCollectionName();
 
     if (SyntheticMutator) {
-        SyntheticMutator.update(`conversation::${conversationId}::${collectionName}`, participant._id, typingModifier);
+        SyntheticMutator.update(`conversations::${conversationId}::${collectionName}`, participant._id, typingModifier);
 
         this.onStop(() => {
-            SyntheticMutator.update(`conversation::${conversationId}::${collectionName}`, participant._id, notTypingModifier);
+            SyntheticMutator.update(`conversations::${conversationId}::${collectionName}`, participant._id, notTypingModifier);
         });
     } else {
-        participant.update(typingModifier, {
-            namespace: `conversation::${conversationId}`,
-        });
+        participant.update(typingModifier);
 
         this.onStop(() => {
-            participant.update(notTypingModifier, {
-                namespace: `conversation::${conversationId}`,
-            });
+            participant.update(notTypingModifier);
         });
     }
 
