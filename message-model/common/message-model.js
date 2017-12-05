@@ -57,11 +57,11 @@ class Message extends BaseModel {
         const now = new Date();
         let stamp = '';
 
-        if (now.toLocaleDateString() !== this.date.toLocaleDateString()) {
-            stamp += `${this.date.toLocaleDateString()} `;
+        if (now.toLocaleDateString() !== this.createdAt.toLocaleDateString()) {
+            stamp += `${this.createdAt.toLocaleDateString()} `;
         }
 
-        stamp += this.date.toLocaleTimeString();
+        stamp += this.createdAt.toLocaleTimeString();
 
         return stamp;
     }

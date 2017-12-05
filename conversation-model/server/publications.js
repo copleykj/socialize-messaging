@@ -58,7 +58,7 @@ publishComposite('socialize.conversation', function publishConversation(conversa
             },
             {
                 find(conversation) {
-                    return conversation.messages({ limit: 1, sort: { date: -1 } });
+                    return conversation.messages({ limit: 1, sort: { createdAt: -1 } });
                 },
             },
         ],
@@ -75,7 +75,7 @@ publishComposite('socialize.conversations', function publishConversations(option
 
     const newOptions = { limit, skip };
 
-    newOptions.sort = { date: -1 };
+    newOptions.sort = { createdAt: -1 };
 
     publicationOptionsSchema.validate(newOptions);
 
@@ -103,7 +103,7 @@ publishComposite('socialize.conversations', function publishConversations(option
                     },
                     {
                         find(conversation) {
-                            return conversation.messages({ limit: 1, sort: { date: -1 } });
+                            return conversation.messages({ limit: 1, sort: { createdAt: -1 } });
                         },
                     },
                 ],
@@ -142,7 +142,7 @@ publishComposite('socialize.unreadConversations', function publishUnreadConversa
                     },
                     {
                         find(conversation) {
-                            return conversation.messages({ limit: 1, sort: { date: -1 } });
+                            return conversation.messages({ limit: 1, sort: { createdAt: -1 } });
                         },
                     },
                 ],
@@ -161,7 +161,7 @@ Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationI
 
         const newOptions = { limit, skip };
 
-        newOptions.sort = { date: -1 };
+        newOptions.sort = { createdAt: -1 };
 
         publicationOptionsSchema.validate(newOptions);
 
