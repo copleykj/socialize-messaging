@@ -12,6 +12,8 @@ const MessagesCollection = new Mongo.Collection('socialize:messages');
 if (MessagesCollection.configureRedisOplog) {
     MessagesCollection.configureRedisOplog({
         mutation(options, { selector, doc }) {
+            const namespaces = [MessagesCollection._name];
+
             let conversationId = (selector && selector.conversationId) || (doc && doc.conversationId);
 
             if (!conversationId && selector._id) {
@@ -20,17 +22,18 @@ if (MessagesCollection.configureRedisOplog) {
             }
 
             if (conversationId) {
-                Object.assign(options, {
-                    namespace: conversationId,
-                });
+                namespaces.push(conversationId);
             }
+
+            Object.assign(options, {
+                namespaces,
+            });
         },
         cursor(options, selector) {
-            if (selector.conversationId) {
-                Object.assign(options, {
-                    namespace: selector.conversationId,
-                });
-            }
+            const namespace = (selector && selector.conversationId) || MessagesCollection._name;
+            Object.assign(options, {
+                namespace,
+            });
         },
     });
 }

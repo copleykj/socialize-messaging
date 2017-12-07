@@ -15,23 +15,37 @@ const ParticipantsCollection = new Mongo.Collection('socialize:participants');
 if (ParticipantsCollection.configureRedisOplog) {
     ParticipantsCollection.configureRedisOplog({
         mutation(options, { selector, doc }) {
-            let conversationId = selector.conversationId || (doc && doc.conversationId);
+            const namespaces = [ParticipantsCollection._name];
 
-            if (!conversationId && selector._id) {
+            let conversationId = (selector && selector.conversationId) || (doc && doc.conversationId);
+            let userId = (selector && selector.userId) || (doc && doc.userId);
+
+            if (!conversationId && !userId && selector._id) {
                 const participant = ParticipantsCollection.findOne({ _id: selector._id }, { fields: { conversationId: 1 } });
-                conversationId = participant && participant.conversationId;
+
+                if (participant) {
+                    conversationId = participant.conversationId;
+                    userId = participant.userId;
+                }
             }
 
             if (conversationId) {
-                Object.assign(options, {
-                    namespace: `conversations::${conversationId}`,
-                });
+                namespaces.push(conversationId);
             }
+            if (userId) {
+                namespaces.push(userId);
+            }
+
+            Object.assign(options, {
+                namespaces,
+            });
         },
         cursor(options, selector) {
-            if (selector.conversationId) {
+            const namespace = (selector && (selector.conversationId || selector.userId)) || ParticipantsCollection._name;
+
+            if (namespace) {
                 Object.assign(options, {
-                    namespace: `conversations::${selector.conversationId}`,
+                    namespace,
                 });
             }
         },
