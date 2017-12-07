@@ -32,6 +32,7 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
      * Tracking observations is done throught the "viewingConversation" subscription
     */
     ParticipantsCollection.update({
+        userId: { $ne: userId },
         conversationId: document.conversationId,
         observing: {
             $size: 0,
