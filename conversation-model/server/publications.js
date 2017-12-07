@@ -120,17 +120,17 @@ publishComposite('socialize.unreadConversations', function publishUnreadConversa
 
     return {
         find() {
-            return Meteor.participants.find({ userId: this.userId, deleted: { $exists: false }, read: false });
+            return ParticipantsCollection.find({ userId: this.userId, deleted: { $exists: false }, read: false });
         },
         children: [
             {
                 find(participant) {
-                    return Meteor.conversations.find({ _id: participant.conversationId });
+                    return ConversationsCollection.find({ _id: participant.conversationId });
                 },
                 children: [
                     {
                         find(conversation) {
-                            return Meteor.participants.find({ conversationId: conversation._id, deleted: { $exists: false } });
+                            return conversation.participants();
                         },
                         children: [
                             {
