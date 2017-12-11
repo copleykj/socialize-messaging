@@ -3,9 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { User } from 'meteor/socialize:user-model';
 import { publishComposite } from 'meteor/reywood:publish-composite';
-
-import SimpleSchema from 'simpl-schema';
-
 import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
 import { Conversation, ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
 
@@ -14,23 +11,6 @@ let SyntheticMutator;
 if (ParticipantsCollection.configureRedisOplog) {
     SyntheticMutator = require('meteor/cultofcoders:redis-oplog').SyntheticMutator; // eslint-disable-line
 }
-
-
-const publicationOptionsSchema = new SimpleSchema({
-    limit: {
-        type: Number,
-        optional: true,
-    },
-    skip: {
-        type: Number,
-        optional: true,
-    },
-    sort: {
-        type: Object,
-        optional: true,
-        blackbox: true,
-    },
-});
 
 publishComposite('socialize.conversation', function publishConversation(conversationId) {
     check(conversationId, String);
@@ -67,17 +47,25 @@ publishComposite('socialize.conversation', function publishConversation(conversa
 
 
 publishComposite('socialize.conversations', function publishConversations(options = {}) {
+    check(options, {
+        limit: Match.Optional(Number),
+        skip: Match.Optional(Number),
+        sort: Match.Optional(Object),
+    });
+
     if (!this.userId) {
         return this.ready();
     }
 
-    const { limit, skip } = options;
+    const { limit, skip, sort } = options;
 
     const newOptions = { limit, skip };
 
-    newOptions.sort = { createdAt: -1 };
-
-    publicationOptionsSchema.validate(newOptions);
+    if (!sort) {
+        newOptions.sort = { createdAt: -1 };
+    } else {
+        newOptions.sort = sort;
+    }
 
     return {
         find() {
@@ -153,17 +141,26 @@ publishComposite('socialize.unreadConversations', function publishUnreadConversa
 
 
 Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationId, options = {}) {
+    check(conversationId, String);
+
+    check(options, {
+        limit: Match.Optional(Number),
+        skip: Match.Optional(Number),
+        sort: Match.Optional(Object),
+    });
+
     if (this.userId) {
-        check(conversationId, String);
         const user = User.createEmpty(this.userId);
 
-        const { limit, skip } = options;
+        const { limit, skip, sort } = options;
 
         const newOptions = { limit, skip };
 
-        newOptions.sort = { createdAt: -1 };
-
-        publicationOptionsSchema.validate(newOptions);
+        if (!sort) {
+            newOptions.sort = { createdAt: -1 };
+        } else {
+            newOptions.sort = sort;
+        }
 
         const conversation = Conversation.createEmpty(conversationId);
 
