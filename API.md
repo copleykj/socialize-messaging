@@ -217,18 +217,18 @@ Meteor.user().conversations().forEach((conversation) => {
 });
 ```
 
-**isParticipatingIn(conversation)** - check if the user is participating in a conversation.
+**isParticipatingIn(conversationId)** - check if the user is participating in a conversation.
 
 ```javascript
-if(!currentUser.isParticipatingIn(conversation)){
+if(!currentUser.isParticipatingIn(conversationId)){
 	throw new Meteor.error("Not Authorized", "sorry you can't send a message to this conversation because you have not been added to it");
 }
 ```
 
-**isObserving(conversation)** - check if the user is currently observing a conversation.
+**isObserving(conversationId)** - check if the user is currently observing a conversation.
 
 ```javascript
-if(currentUser.isObserving(conversation)){
+if(currentUser.isObserving(conversationId)){
 	console.log(`${curentUser.username} is observing the conversation`);
 }
 ```
@@ -258,16 +258,16 @@ Meteor.user().findExistingConversationWithUsers(participants, function(error, re
 
 ## Stateful Publications ##
 
-These publicatons set certain states for the participant in a conversation. I've chosen to maintain state this way because it maximizes reliability. If the state was set with method calls or collection updates the user could navigate away or the browser could close before the calls execute. With subscriptions they stop when the connection breaks and thus are useful for maintaining state that needs updated when the user leaves the site.
+These publications set certain states for the participant in a conversation. I've chosen to maintain state this way because it maximizes reliability. If the state was set with method calls or collection updates the user could navigate away or the browser could close before the calls execute. With subscriptions they stop when the connection breaks and thus are useful for maintaining state that needs updated when the user leaves the site.
 
 **socialize.viewingConversation('conversationId')** - This publication handles conversation state, setting the observing and read status for the participant. This publication should be subscribed to when the user is viewing the messages for a conversation and should be unsubscribed from when the user is no longer viewing them.
 
 ```javascript
-Meteor.subscribe('viewingConversation', "fMXAoZPxNQGCGCPZQ");
+Meteor.subscribe('socialize.viewingConversation', "fMXAoZPxNQGCGCPZQ");
 ```
 
 **socialize.typing('conversationId')** - This publication handles the typing state. This can be subscribed to on a keypress event and using a setTimeout which is cleared and reset on each key stroke, can be cleared when the time out is allowed to execute or the message is finally sent.
 
 ```javascript
-Meteor.subscribe('typing', "fMXAoZPxNQGCGCPZQ");
+Meteor.subscribe('socialize.typing', "fMXAoZPxNQGCGCPZQ");
 ```

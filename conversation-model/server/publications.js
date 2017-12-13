@@ -105,8 +105,7 @@ Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationI
     if (this.userId) {
         const user = User.createEmpty(this.userId);
         const conversation = Conversation.createEmpty(conversationId);
-
-        if (user.isParticipatingIn(conversation)) {
+        if (user.isParticipatingIn(conversationId)) {
             return conversation.messages(options);
         }
     }

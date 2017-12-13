@@ -47,20 +47,19 @@ User.methods({
     },
     /**
      *  Check if the user is participating in this conversation
-     *  @param      {Conversation}  conversation   Conversation to check if the user is participating in
-     *
+     *  @param      {String}  conversationId   Conversation id to check if the user is participating in
      *  @returns    {Boolean} Whether the user is participating in the conversation or not
      */
-    isParticipatingIn(conversation) {
-        return !!ParticipantsCollection.findOne({ userId: this._id, conversationId: conversation._id, deleted: { $exists: false } });
+    isParticipatingIn(conversationId) {
+        return !!ParticipantsCollection.findOne({ userId: this._id, conversationId, deleted: { $exists: false } });
     },
     /**
      * Check if the user is observing a particular conversation
-     * @param  {Conversation}  conversation A instance of conversation to check if the user is observing
+     * @param  {String}  conversationId An id of conversation to check if the user is observing
      * @return {Boolean}        Whether the user is observing or not
      */
-    isObserving(conversation) {
-        return !!ParticipantsCollection.findOne({ userId: this._id, conversationId: conversation._id, 'observing.0': { $exists: true } });
+    isObserving(conversationId) {
+        return !!ParticipantsCollection.findOne({ userId: this._id, conversationId, 'observing.0': { $exists: true } });
     },
     /**
      *  Find existing conversation between this user a number of other users
