@@ -20,40 +20,6 @@ const optionsArgumentCheck = {
     sort: Match.Optional(Object),
 };
 
-publishComposite('socialize.conversation', function publishConversation(conversationId) {
-    check(conversationId, String);
-
-    if (!this.userId) {
-        return this.ready();
-    }
-
-    return {
-        find() {
-            return ConversationsCollection.find({ _id: conversationId }, { limit: 1 });
-        },
-        children: [
-            {
-                find(conversation) {
-                    return conversation.participants();
-                },
-                children: [
-                    {
-                        find(participant) {
-                            return Meteor.users.find({ _id: participant.userId }, { fields: { username: true, status: true } });
-                        },
-                    },
-                ],
-            },
-            {
-                find(conversation) {
-                    return conversation.messages({ limit: 1, sort: { createdAt: -1 } });
-                },
-            },
-        ],
-    };
-});
-
-
 publishComposite('socialize.conversations', function publishConversations(options = {}) {
     check(options, optionsArgumentCheck);
     if (!this.userId) {
@@ -138,7 +104,6 @@ Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationI
     check(options, optionsArgumentCheck);
     if (this.userId) {
         const user = User.createEmpty(this.userId);
-
         const conversation = Conversation.createEmpty(conversationId);
 
         if (user.isParticipatingIn(conversation)) {
@@ -160,31 +125,33 @@ Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationI
 Meteor.publish('socialize.viewingConversation', function viewingConversationPublication(conversationId) {
     check(conversationId, String);
 
-    if (!this.userId) {
-        return this.ready();
+    if (this.userId) {
+        const user = User.createEmpty(this.userId);
+        const conversation = Conversation.createEmpty(conversationId);
+
+        if (user.isParticipatingIn(conversation)) {
+            const sessionId = this._session.id;
+
+
+            ParticipantsCollection.update({
+                conversationId, userId: this.userId,
+            }, {
+                $addToSet: { observing: sessionId },
+                $set: { read: true },
+            });
+
+            this.onStop(() => {
+                ParticipantsCollection.update({
+                    conversationId, userId: this.userId,
+                }, {
+                    $pull: { observing: sessionId },
+                });
+            });
+        }
     }
 
-    const sessionId = this._session.id;
-
-
-    ParticipantsCollection.update({
-        conversationId, userId: this.userId,
-    }, {
-        $addToSet: { observing: sessionId },
-        $set: { read: true },
-    });
-
-    this.onStop(() => {
-        ParticipantsCollection.update({
-            conversationId, userId: this.userId,
-        }, {
-            $pull: { observing: sessionId },
-        });
-    });
 
     this.ready();
-
-    return undefined;
 });
 
 
@@ -195,40 +162,40 @@ Meteor.publish('socialize.viewingConversation', function viewingConversationPubl
 Meteor.publish('socialize.typing', function typingPublication(conversationId) {
     check(conversationId, String);
 
-    if (!this.userId) {
-        return this.ready();
+    if (this.userId) {
+        const user = User.createEmpty(this.userId);
+        const conversation = Conversation.createEmpty(conversationId);
+
+        if (user.isParticipatingIn(conversation)) {
+            const participant = ParticipantsCollection.findOne({ conversationId, userId: this.userId }, { fields: { _id: true } });
+
+            const sessionId = this._session.id;
+
+            const typingModifier = {
+                $addToSet: { typing: sessionId },
+            };
+
+            const notTypingModifier = {
+                $pull: { typing: sessionId },
+            };
+
+            const collectionName = participant.getCollectionName();
+
+            if (SyntheticMutator) {
+                SyntheticMutator.update(`conversations::${conversationId}::${collectionName}`, participant._id, typingModifier);
+
+                this.onStop(() => {
+                    SyntheticMutator.update(`conversations::${conversationId}::${collectionName}`, participant._id, notTypingModifier);
+                });
+            } else {
+                participant.update(typingModifier);
+
+                this.onStop(() => {
+                    participant.update(notTypingModifier);
+                });
+            }
+        }
     }
-
-    const participant = ParticipantsCollection.findOne({ conversationId, userId: this.userId }, { fields: { _id: true } });
-
-    const sessionId = this._session.id;
-
-    const typingModifier = {
-        $addToSet: { typing: sessionId },
-    };
-
-    const notTypingModifier = {
-        $pull: { typing: sessionId },
-    };
-
-    const collectionName = participant.getCollectionName();
-
-    if (SyntheticMutator) {
-        SyntheticMutator.update(`conversations::${conversationId}::${collectionName}`, participant._id, typingModifier);
-
-        this.onStop(() => {
-            SyntheticMutator.update(`conversations::${conversationId}::${collectionName}`, participant._id, notTypingModifier);
-        });
-    } else {
-        participant.update(typingModifier);
-
-        this.onStop(() => {
-            participant.update(notTypingModifier);
-        });
-    }
-
 
     this.ready();
-
-    return undefined;
 });
