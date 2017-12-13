@@ -20,7 +20,7 @@ const optionsArgumentCheck = {
     sort: Match.Optional(Object),
 };
 
-publishComposite('socialize.conversations', function publishConversations(options = {}) {
+publishComposite('socialize.conversations', function publishConversations(options = { limt: 10, sort: { createdAt: -1 } }) {
     check(options, optionsArgumentCheck);
     if (!this.userId) {
         return this.ready();
@@ -99,7 +99,7 @@ publishComposite('socialize.unreadConversations', function publishUnreadConversa
 });
 
 
-Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationId, options = { sort: { createdAt: -1 } }) {
+Meteor.publish('socialize.messagesFor', function publishMessageFor(conversationId, options = { limit: 30, sort: { createdAt: -1 } }) {
     check(conversationId, String);
     check(options, optionsArgumentCheck);
     if (this.userId) {
