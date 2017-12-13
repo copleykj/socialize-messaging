@@ -126,9 +126,8 @@ Meteor.publish('socialize.viewingConversation', function viewingConversationPubl
 
     if (this.userId) {
         const user = User.createEmpty(this.userId);
-        const conversation = Conversation.createEmpty(conversationId);
 
-        if (user.isParticipatingIn(conversation)) {
+        if (user.isParticipatingIn(conversationId)) {
             const sessionId = this._session.id;
 
 
@@ -163,9 +162,8 @@ Meteor.publish('socialize.typing', function typingPublication(conversationId) {
 
     if (this.userId) {
         const user = User.createEmpty(this.userId);
-        const conversation = Conversation.createEmpty(conversationId);
 
-        if (user.isParticipatingIn(conversation)) {
+        if (user.isParticipatingIn(conversationId)) {
             const participant = ParticipantsCollection.findOne({ conversationId, userId: this.userId }, { fields: { _id: true } });
 
             const sessionId = this._session.id;
