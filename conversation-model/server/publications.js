@@ -21,41 +21,36 @@ const optionsArgumentCheck = {
 };
 
 publishComposite('socialize.conversation', function publishConversation(conversationId) {
-  check(conversationId, String);
+    check(conversationId, String);
 
-  if (!this.userId) {
-    return this.ready();
-  } else {
-    const user = User.createEmpty(this.userId);
-    if (user.isParticipatingIn(conversationId)) {
-      return this.ready();
+    if (this.userId) {
+        const user = User.createEmpty(this.userId);
+        if (user.isParticipatingIn(conversationId)) {
+            return {
+                find() {
+                    return ConversationsCollection.find({ _id: conversationId }, { limit: 1 });
+                },
+                children: [
+                    {
+                        find(conversation) {
+                            return conversation.participants();
+                        },
+                        children: [{
+                            find(participant) {
+                                return Meteor.users.find({ _id: participant.userId }, { fields: { username: true, status: true } });
+                            },
+                        }],
+                    },
+                    {
+                        find(conversation) {
+                            return conversation.messages({ limit: 1, sort: { createdAt: -1 } });
+                        },
+                    },
+                ],
+            };
+        }
     }
-  }
-
-  return {
-    find() {
-      return ConversationsCollection.find({ _id: conversationId }, { limit: 1 });
-    },
-    children: [
-      {
-        find(conversation) {
-          return conversation.participants();
-        },
-        children: [
-          {
-            find(participant) {
-              return Meteor.users.find({ _id: participant.userId }, { fields: { username: true, status: true } });
-            },
-          },
-        ],
-      },
-      {
-        find(conversation) {
-          return conversation.messages({ limit: 1, sort: { createdAt: -1 } });
-        },
-      },
-    ],
-  };
+    return this.ready();
 });
 
 publishComposite('socialize.conversations', function publishConversations(options = { limt: 10, sort: { createdAt: -1 } }) {
