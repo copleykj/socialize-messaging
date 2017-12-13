@@ -104,12 +104,6 @@ conversation.addParticipant(user);
 conversation.updateReadState(false); //set the conversation to unread
 ```
 
-**readBy()** - returns the string "read by" followed by a  a serialized sentence of the users who have read the conversation.
-
-```javascript
-console.log(conversation.readBy()); //=> read by copleykj
-```
-
 **removeParticipant(participant)** - Remove a user from the conversation. `participant` param defaults to the currently logged in user. From the client the currently logged in user can only remove themselves.
 
 ```javascript
@@ -253,18 +247,26 @@ Meteor.user().findExistingConversationWithUsers(participants, function(error, re
 
 -----------------------------------------
 
+## Data Publications ##
+
+**socialize.conversations(options={ limit: 10, sort: { createdAt: -1 } })** - Publishes the conversations for the currently logged in user along with it's participants and the most recent message.
+
+**socialize.unreadConversations** - Publishes unread conversations for the current users along with its participants and the most recent message.
+
+**socialize.messagesFor(conversationId, options={ limit: 30, sort: { createdAt: -1 } })** - Publishes the messages for the specified conversation.
+
 
 ## Stateful Publications ##
 
 These publicatons set certain states for the participant in a conversation. I've chosen to maintain state this way because it maximizes reliability. If the state was set with method calls or collection updates the user could navigate away or the browser could close before the calls execute. With subscriptions they stop when the connection breaks and thus are useful for maintaining state that needs updated when the user leaves the site.
 
-**viewingConversation "conversationId"** - This publication handles conversation state, setting the observing and read status for the participant. This publication should be subscribed to when the user is viewing the messages for a conversation and should be unsubscribed from when the user is no longer viewing them.
+**socialize.viewingConversation('conversationId')** - This publication handles conversation state, setting the observing and read status for the participant. This publication should be subscribed to when the user is viewing the messages for a conversation and should be unsubscribed from when the user is no longer viewing them.
 
 ```javascript
 Meteor.subscribe('viewingConversation', "fMXAoZPxNQGCGCPZQ");
 ```
 
-**typing "conversationId"** - This publication handles the typing state. This can be subscribed to on a keypress event and using a setTimeout which is cleared and reset on each key stroke, can be cleared when the time out is allowed to execute or the message is finally sent.
+**socialize.typing('conversationId')** - This publication handles the typing state. This can be subscribed to on a keypress event and using a setTimeout which is cleared and reset on each key stroke, can be cleared when the time out is allowed to execute or the message is finally sent.
 
 ```javascript
 Meteor.subscribe('typing', "fMXAoZPxNQGCGCPZQ");
