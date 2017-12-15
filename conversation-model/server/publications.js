@@ -37,7 +37,7 @@ publishComposite('socialize.conversation', function publishConversation(conversa
                         },
                         children: [{
                             find(participant) {
-                                return Meteor.users.find({ _id: participant.userId }, { fields: { username: true, status: true } });
+                                return Meteor.users.find({ _id: participant.userId }, { fields: User.fieldsToPublish });
                             },
                         }],
                     },
@@ -76,7 +76,7 @@ publishComposite('socialize.conversations', function publishConversations(option
                         children: [
                             {
                                 find(participant) {
-                                    return Meteor.users.find({ _id: participant.userId }, { fields: { username: true } });
+                                    return Meteor.users.find({ _id: participant.userId }, { fields: User.fieldsToPublish });
                                 },
                             },
                         ],
@@ -115,7 +115,7 @@ publishComposite('socialize.unreadConversations', function publishUnreadConversa
                         children: [
                             {
                                 find(participant) {
-                                    return Meteor.users.find({ _id: participant.userId }, { fields: { username: true } });
+                                    return Meteor.users.find({ _id: participant.userId }, { fields: User.fieldsToPublish });
                                 },
                             },
                         ],
