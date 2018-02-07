@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { BaseModel } from 'meteor/socialize:base-model';
+import { LinkableModel, LinkParent } from 'meteor/socialize:linkable-model';
 import { ServerTime } from 'meteor/socialize:server-time';
 
 /* eslint-enable import/no-unresolved */
@@ -43,7 +43,7 @@ if (MessagesCollection.configureRedisOplog) {
  * The Message Class
  * @class Message
  */
-class Message extends BaseModel {
+class Message extends LinkParent {
     /**
     * Get the user that wrote the message
     * @returns {User} The user who wrote the message
@@ -79,6 +79,8 @@ class Message extends BaseModel {
 }
 
 Message.attachCollection(MessagesCollection);
+
+LinkableModel.registerParentModel(Message);
 
 // Create our message schema
 MessagesCollection.attachSchema(new SimpleSchema({
