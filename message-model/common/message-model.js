@@ -88,7 +88,7 @@ MessagesCollection.attachSchema(new SimpleSchema({
         type: String,
         regEx: SimpleSchema.RegEx.Id,
         autoValue() {
-            if (this.isInsert) {
+            if (this.isInsert && (!this.isFromTrustedCode || !this.isSet)) {
                 return this.userId;
             }
             return undefined;
