@@ -171,6 +171,11 @@ ConversationsCollection.attachSchema(new SimpleSchema({
         },
         index: -1,
     },
+    messageCount: {
+        type: Number,
+        defaultValue: 0,
+        custom: SimpleSchema.denyUntrusted,
+    },
     _participants: {
         type: Array,
         defaultValue: [],

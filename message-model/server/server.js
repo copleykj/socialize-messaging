@@ -29,7 +29,7 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
      * If we update users who are reading the conversation it will show the
      * conversation as unread to the user. This would be bad UX design
      *
-     * Tracking observations is done throught the "viewingConversation" subscription
+     * Tracking observations is done through the "viewingConversation" subscription
     */
     ParticipantsCollection.update({
         userId: { $ne: userId },
@@ -47,5 +47,9 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
     ParticipantsCollection.update({ userId }, { $set: { updatedAt } });
 
     // update the date on the conversation for sorting the conversation from newest to oldest
-    ConversationsCollection.update(document.conversationId, { $set: { updatedAt } });
+    ConversationsCollection.update(document.conversationId, { $inc: { messageCount: 1 } });
+});
+
+MessagesCollection.after.remove(function afterRemove(userId, document) {
+    ConversationsCollection.update(document.conversationId, { $inc: { messageCount: -1 } });
 });
