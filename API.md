@@ -249,7 +249,7 @@ Meteor.user().findExistingConversationWithUsers(participants, function(error, re
 
 ## Data Publications ##
 
-**socialize.conversations(options={ limit: 10, sort: { createdAt: -1 } })** - Publishes the conversations for the currently logged in user along with it's participants and the most recent message.
+**socialize.conversations(options={ limit: 10, sort: { updatedAt: -1 } })** - Publishes the conversations for the currently logged in user along with it's participants and the most recent message.
 
 **socialize.unreadConversations** - Publishes unread conversations for the current users along with its participants and the most recent message.
 

@@ -53,7 +53,7 @@ publishComposite('socialize.conversation', function publishConversation(conversa
     return this.ready();
 });
 
-publishComposite('socialize.conversations', function publishConversations(options = { limit: 10, sort: { createdAt: -1 } }) {
+publishComposite('socialize.conversations', function publishConversations(options = { limit: 10, sort: { updatedAt: -1 } }) {
     check(options, optionsArgumentCheck);
     if (!this.userId) {
         return this.ready();

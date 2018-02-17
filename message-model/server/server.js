@@ -23,7 +23,7 @@ MessagesCollection.allow({
 // After a message is sent we need to update the ParticipantsCollection and ConversationsCollection
 MessagesCollection.after.insert(function afterInsert(userId, document) {
     // Grab the current time
-    const date = ServerTime.date();
+    const updatedAt = ServerTime.date();
 
     /* Only update participants who aren't observing the conversation.
      * If we update users who are reading the conversation it will show the
@@ -44,8 +44,8 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
         multi: true,
     });
 
-    ParticipantsCollection.update({ userId }, { $set: { date } });
+    ParticipantsCollection.update({ userId }, { $set: { updatedAt } });
 
     // update the date on the conversation for sorting the conversation from newest to oldest
-    ConversationsCollection.update(document.conversationId, { $set: { date } });
+    ConversationsCollection.update(document.conversationId, { $set: { updatedAt } });
 });

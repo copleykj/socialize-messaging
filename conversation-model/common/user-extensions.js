@@ -39,11 +39,11 @@ User.methods({
      * @return {Conversation} The newest conversation
      */
     newestConversation() {
-        const conversations = ParticipantsCollection.find(
+        const participant = ParticipantsCollection.findOne(
             { userId: this._id },
-            { fields: { conversationId: true }, reactive: false },
-        ).map(participant => participant.conversationId);
-        return conversations && ConversationsCollection.findOne({ _id: { $in: conversations } }, { sort: { createdAt: -1 } });
+            { fields: { conversationId: true } },
+        );
+        return participant && ConversationsCollection.findOne({ _id: participant.conversationId });
     },
     /**
      *  Check if the user is participating in this conversation
