@@ -41,7 +41,7 @@ User.methods({
     newestConversation() {
         const participant = ParticipantsCollection.findOne(
             { userId: this._id },
-            { fields: { conversationId: true } },
+            { fields: { conversationId: true }, sort: { updatedAt: -1 } },
         );
         return participant && ConversationsCollection.findOne({ _id: participant.conversationId });
     },
