@@ -1,3 +1,9 @@
+#v1.1.1
+- fix newestConversation method to actually return the most recently updated conversation
+- optimize updating participants when message is sent
+- fix namespacing issue in redis-oplog integration
+- fix reactivity of numUnreadConversations method
+
 # v1.1.0
 - Fix issue with updating updatedAt field on participants and conversations which affected sorting
 
