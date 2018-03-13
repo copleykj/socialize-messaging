@@ -49,7 +49,7 @@ routepolicy@1.0.12
 service-configuration@1.0.11
 socialize:base-model@1.1.1
 socialize:linkable-model@1.0.1
-socialize:messaging@1.1.0
+socialize:messaging@1.1.1
 socialize:server-presence@1.0.1
 socialize:server-time@1.0.0
 socialize:user-model@1.0.0
