@@ -41,13 +41,15 @@ if (ParticipantsCollection.configureRedisOplog) {
             });
         },
         cursor(options, selector) {
-            const namespace = (selector && (selector.conversationId || selector.userId)) || ParticipantsCollection._name;
+            const namespaces = [ParticipantsCollection._name];
+            const { conversationId, userId } = selector;
 
-            if (namespace) {
-                Object.assign(options, {
-                    namespace,
-                });
-            }
+            conversationId && namespaces.push(conversationId);
+            userId && namespaces.push(userId);
+
+            Object.assign(options, {
+                namespaces,
+            });
         },
     });
 }
