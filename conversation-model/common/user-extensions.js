@@ -32,7 +32,8 @@ User.methods({
      * @return {Number} The number or unread conversations
      */
     numUnreadConversations() {
-        return ParticipantsCollection.find({ userId: this._id, read: false }, { fields: { } }).count();
+        const cursor = ParticipantsCollection.find({ userId: this._id, read: false }, { fields: { } });
+        return Meteor.isClient ? cursor.fetch().length : cursor.count();
     },
     /**
      * Get the most recently updated conversation that the user is participating in
