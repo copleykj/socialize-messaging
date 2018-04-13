@@ -4,8 +4,7 @@ import { check, Match } from 'meteor/check';
 import { User } from 'meteor/socialize:user-model';
 import { publishComposite } from 'meteor/reywood:publish-composite';
 
-import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
-import { Conversation, ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
+import { ParticipantsCollection, Conversation, ConversationsCollection } from '../../common.js';
 
 let SyntheticMutator;
 
@@ -197,7 +196,7 @@ Meteor.publish('socialize.typing', function typingPublication(conversationId) {
         const user = User.createEmpty(this.userId);
 
         if (user.isParticipatingIn(conversationId)) {
-            const participant = ParticipantsCollection.findOne({ conversationId, userId: this.userId }, { fields: { _id: true } });
+            const participant = ParticipantsCollection.findOne({ conversationId, userId: this.userId }, { fields: { _id: 1 } });
 
             const sessionId = this._session.id;
 

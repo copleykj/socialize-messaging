@@ -1,10 +1,9 @@
 /* eslint-disable import/no-unresolved */
-import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
-import { BaseModel } from 'meteor/socialize:base-model';
-import { LinkableModel, LinkParent } from 'meteor/socialize:linkable-model';
-import { User } from 'meteor/socialize:user-model';
-import { ServerTime } from 'meteor/socialize:server-time';
+import Meteor, { Mongo } from '@socialize/react-native-meteor';
+import { BaseModel } from '@socialize/base-model';
+import { LinkableModel, LinkParent } from '@socialize/linkable-model';
+import { User } from '@socialize/user-model';
+import { ServerTime } from '@socialize/server-time';
 /* eslint-enable import/no-unresolved */
 
 import extendUser from './conversation-model/common/user-extensions.js';

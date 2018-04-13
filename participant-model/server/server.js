@@ -5,8 +5,7 @@ import { UserPresence } from 'meteor/socialize:user-presence';
 
 /* eslint-enable import/no-unresolved */
 
-import { ParticipantsCollection } from '../common/participant-model.js';
-import { Conversation, ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
+import { ParticipantsCollection, ConversationsCollection } from '../../common.js';
 
 ParticipantsCollection.allow({
     insert(userId, participant) {

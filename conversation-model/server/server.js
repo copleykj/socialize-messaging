@@ -1,12 +1,10 @@
 /* eslint-disable import/no-unresolved */
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-
 /* eslint-enable import/no-unresolved */
 
-import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
-import { ConversationsCollection } from '../common/conversation-model.js';
-import { MessagesCollection } from '../../message-model/common/message-model.js';
+import { ParticipantsCollection, ConversationsCollection, MessagesCollection } from '../../common.js';
+import './publications.js';
 
 ConversationsCollection.allow({
     insert(userId) {

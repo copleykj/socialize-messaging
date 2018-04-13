@@ -1,6 +1,4 @@
-import { ParticipantsCollection } from '../../participant-model/common/participant-model.js';
-import { ConversationsCollection } from '../../conversation-model/common/conversation-model.js';
-import { MessagesCollection } from '../common/message-model.js';
+import { ParticipantsCollection, ConversationsCollection, MessagesCollection } from '../../common.js';
 
 MessagesCollection.allow({
     // If the user is a participant, allow them to insert (send) a message
