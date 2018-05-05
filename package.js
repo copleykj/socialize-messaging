@@ -17,5 +17,5 @@ Package.onUse(function _(api) {
     ]);
 
     api.mainModule('server.js', 'server');
-    api.mainModule('common.js');
+    api.mainModule('common.js', 'client');
 });
