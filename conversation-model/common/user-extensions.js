@@ -19,12 +19,15 @@ export default ({ Meteor, User, ParticipantsCollection, ConversationsCollection 
 
             return ConversationsCollection.find({ _id: { $in: conversationIds } }, options);
         },
+        unreadConversations(options = {}) {
+            return ParticipantsCollection.find({ userId: this._id, read: false }, options);
+        },
         /**
         * Get the numer of unread conversations for the user
         * @return {Number} The number or unread conversations
         */
         numUnreadConversations() {
-            const cursor = ParticipantsCollection.find({ userId: this._id, read: false }, { fields: { _id: 1 } });
+            const cursor = this.unreadConversations({ fields: { _id: 1 } });
             return Meteor.isClient ? cursor.fetch().length : cursor.count();
         },
         /**
