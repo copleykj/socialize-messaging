@@ -1,4 +1,8 @@
-#v1.1.1
+# v1.2.0
+- added `unreadConversations` method
+- updated dependency versions
+
+# v1.1.1
 - fix newestConversation method to actually return the most recently updated conversation
 - optimize updating participants when message is sent
 - fix namespacing issue in redis-oplog integration
