@@ -2,7 +2,7 @@
 Package.describe({
     name: 'socialize:messaging',
     summary: 'A social messaging package',
-    version: '1.1.1',
+    version: '1.2.0',
     git: 'https://github.com/copleykj/socialize-messaging.git',
 });
 
@@ -11,11 +11,11 @@ Package.onUse(function _(api) {
 
     api.use([
         'check',
-        'socialize:user-presence@1.0.0',
-        'socialize:linkable-model@1.0.1',
-        'reywood:publish-composite@1.5.2',
+        'socialize:user-presence@1.0.1',
+        'socialize:linkable-model@1.0.3',
+        'reywood:publish-composite@1.6.0',
     ]);
 
     api.mainModule('server.js', 'server');
-    api.mainModule('common.js');
+    api.mainModule('common.js', 'client');
 });
