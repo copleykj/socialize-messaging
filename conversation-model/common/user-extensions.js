@@ -19,6 +19,11 @@ export default ({ Meteor, User, ParticipantsCollection, ConversationsCollection 
 
             return ConversationsCollection.find({ _id: { $in: conversationIds } }, options);
         },
+        /**
+         * Retrieve only the unread conversations the user is currently involved in
+         * @param  {Object} [options={}] [description]
+         * @return {Mongo.Cursor}              [description]
+         */
         unreadConversations(options = {}) {
             return ParticipantsCollection.find({ userId: this._id, read: false }, options);
         },

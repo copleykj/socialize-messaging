@@ -217,6 +217,20 @@ Meteor.user().conversations().forEach((conversation) => {
 });
 ```
 
+**unreadConversations(options = {})** - Get the unread conversations that the user is participating in. This returns a mongo cursor which when iterated over will return `Conversation` instances. Signature of `options` param is the same as you would pass to `Collection.find()`.
+
+```javascript
+Meteor.user().unreadConversations().forEach((conversation) => {
+	console.log(conversation.lastMessage().body);
+});
+```
+
+**numUnreadconversations** - Get the number of unread conversations that the user is participating in.
+
+```javascript
+Meteor.user().numUnreadConversations(); // => 5
+```
+
 **isParticipatingIn(conversationId)** - check if the user is participating in a conversation.
 
 ```javascript
