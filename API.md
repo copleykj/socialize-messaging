@@ -98,7 +98,7 @@ let user = Meteor.users.findOne({username:"copleykj"});
 conversation.addParticipant(user);
 ```
 
-**updateReadState(state)** - Manually update the read state of the conversation for the currentUser.. This is generally handled automatically through subscribing to the viewingConversation publication. Subscribing to this subscription not only sets the conversation as read by the user but also notes the user as observing the conversation so that when a new message is added, the read state is only set to false for users not observing. Unsubscribing from this subscription sets observing to false and read will be set to true for the participant when new messages come in.
+**updateReadState(state)** - Manually update the read state of the conversation for the currentUser.. This is generally handled automatically through subscribing to the `socialize.viewingConversation` publication. Subscribing to this subscription not only sets the conversation as read by the user but also notes the user as observing the conversation so that when a new message is added, the read state is only set to false for users not observing. Unsubscribing from this subscription sets observing to false and read will be set to true for the participant when new messages come in.
 
 ```javascript
 conversation.updateReadState(false); //set the conversation to unread
