@@ -81,7 +81,7 @@ For a more in depth explanation of how to use this package see [API.md][api]
 
 This implements [cultofcoders:redis-oplog][redis-oplog]'s namespaces to provide reactive scalability as an alternative to Meteor's `livedata`. Use of redis-oplog is not required and will not engage until you install the [cultofcoders:redis-oplog][redis-oplog] package and configure it.
 
-[redis-oplog]:https://github.com/cultofcoders/redis-oplog
+[redis-oplog]:https://github.com/cult-of-coders/redis-oplog
 [socialize]:https://atmospherejs.com/socialize
 [api]: https://github.com/copleykj/socialize-messaging/blob/master/API.md
 [meteor]: https://meteor.com
