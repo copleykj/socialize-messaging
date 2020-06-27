@@ -13,7 +13,7 @@ Package.onUse(function _(api) {
         'check',
         'socialize:user-presence@1.0.1',
         'socialize:linkable-model@1.0.3',
-        'reywood:publish-composite@1.6.0',
+        'reywood:publish-composite@1.7.3',
     ]);
 
     api.mainModule('server.js', 'server');
