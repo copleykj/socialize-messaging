@@ -1,6 +1,6 @@
 {
     "name": "@socialize/messaging",
-    "version": "1.0.0",
+    "version": "1.2.1",
     "description": "Meteor's socialize:messaging package ported for React Native",
     "main": "entry-rn.js",
     "scripts": {
@@ -21,7 +21,7 @@
     },
     "homepage": "https://github.com/copleykj/socialize-messaging#readme",
     "dependencies": {
-        "@socialize/user-presence": "^1.0.0",
-        "@socialize/linkable-model": "^1.0.0"
+        "@socialize/user-presence": "^1.0.2",
+        "@socialize/linkable-model": "^1.0.4"
     }
 }

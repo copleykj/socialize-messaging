@@ -11,7 +11,7 @@ Package.onUse(function _(api) {
 
     api.use([
         'check',
-        'socialize:user-presence@1.0.1',
+        'socialize:user-presence@1.0.2',
         'socialize:linkable-model@1.0.4',
         'reywood:publish-composite@1.7.3',
     ]);
