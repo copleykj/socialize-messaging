@@ -7,7 +7,7 @@ Package.describe({
 });
 
 Package.onUse(function _(api) {
-    api.versionsFrom('1.3');
+    api.versionsFrom('1.10.2');
 
     api.use([
         'check',
