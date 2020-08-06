@@ -4,7 +4,8 @@
     "description": "Meteor's socialize:messaging package ported for React Native",
     "main": "entry-rn.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "publish": "meteor npm i && npm prune --production && meteor publish && meteor npm i"
     },
     "repository": {
         "type": "git",
@@ -12,7 +13,8 @@
     },
     "keywords": [
         "meteor",
-        "react-native"
+        "react-native",
+        "socialize"
     ],
     "author": "Kelly Copley <copleykj@gmail.com>",
     "license": "MIT",
