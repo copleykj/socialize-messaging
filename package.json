@@ -5,7 +5,8 @@
     "main": "entry-rn.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "publish": "meteor npm i && npm prune --production && meteor publish && meteor npm i"
+        "publish": "meteor npm i && npm prune --production && meteor publish && meteor npm i",
+        "publish-release": "npm publish --access public"
     },
     "repository": {
         "type": "git",
