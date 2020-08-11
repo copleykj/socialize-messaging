@@ -28,17 +28,17 @@
         "@socialize/linkable-model": "^1.0.4"
     },
     "funding": [
-      {
-        "type" : "github",
-        "url" : "https://github.com/sponsors/copleykj"
-      },
-      {
-        "type" : "patreon",
-        "url" : "https://www.patreon.com/copleykj"
-      },
-      {
-        "type" : "paypal",
-        "url" : "https://www.paypal.me/copleykj"
-      }
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/copleykj"
+        },
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/copleykj"
+        },
+        {
+            "type": "paypal",
+            "url": "https://www.paypal.me/copleykj"
+        }
     ]
 }
