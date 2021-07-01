@@ -1,6 +1,6 @@
 {
     "name": "@socialize/messaging",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Meteor's socialize:messaging package ported for React Native",
     "main": "entry-rn.js",
     "scripts": {
