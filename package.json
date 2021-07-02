@@ -24,8 +24,8 @@
     },
     "homepage": "https://github.com/copleykj/socialize-messaging#readme",
     "dependencies": {
-        "@socialize/user-presence": "^1.0.3",
-        "@socialize/linkable-model": "^1.0.5"
+        "@socialize/user-presence": "^1.0.4",
+        "@socialize/linkable-model": "^1.0.6"
     },
     "devDependencies": {
         "rimraf": "^3.0.2"
