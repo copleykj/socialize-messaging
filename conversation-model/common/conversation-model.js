@@ -127,7 +127,7 @@ export default ({ Meteor, BaseModel, User, ServerTime, ConversationsCollection,
         */
         removeParticipant(user) {
             const userId = (user && user._id) || Meteor.userId();
-            const query = { conversationId: this._id, userId };
+            const query = { conversationId: this._id, userId, deleted: { $exists: false } };
             const modifier = { $set: { deleted: true, read: true } };
 
             if (Meteor.isClient) {
