@@ -25,6 +25,7 @@ MessagesCollection.after.insert(function afterInsert(userId, document) {
     ParticipantsCollection.update({
         userId: { $ne: userId },
         conversationId: document.conversationId,
+        deleted: { $exists: false },
         observing: {
             $size: 0,
         },
